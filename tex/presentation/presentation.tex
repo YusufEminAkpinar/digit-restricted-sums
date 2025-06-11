@@ -1,0 +1,754 @@
+\documentclass{beamer}
+
+% Setup appearance:
+\usepackage{xcolor}
+\usepackage{svg}
+\usepackage{minted}
+\usepackage{booktabs}
+% Standard packages
+\usepackage[french]{babel} % For French language support
+\usepackage[utf8]{inputenc} % UTF-8 encoding for input
+\usepackage[T1]{fontenc} % T1 encoding for output
+\usepackage{lmodern} % Latin Modern font for better T1 encoding support
+\usepackage{seqsplit}
+
+% Setup TikZ
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{adjustbox}
+\usetikzlibrary{arrows}
+\tikzstyle{block}=[draw opacity=0.7,line width=1.4cm]
+
+
+
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\sump}{\sideset{}{'}\sum}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\definecolor{dark-charcoal}{RGB}{30,30,30}
+\definecolor{steel-blue}{RGB}{70,130,180}
+\definecolor{burgundy}{RGB}{100,0,25}
+\definecolor{dark-slate}{RGB}{47,79,79}
+\definecolor{light-ash}{RGB}{200,200,200}
+\definecolor{text-black}{RGB}{20,20,20}
+\definecolor{gray2}{RGB}{162,163,162}
+\definecolor{LightGray}{gray}{0.9}
+
+\usetheme[structurebold, palette=dark-charcoal]{Berkeley}
+\usefonttheme[onlylarge]{structurebold}
+\setbeamerfont*{frametitle}{size=\normalsize,series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[rounded][shadow=true]
+
+\setbeamercolor{structure}{fg=burgundy}
+\setbeamercolor{section in head/foot}{bg=dark-slate, fg=light-ash}
+\setbeamercolor{subsection in head/foot}{bg=dark-slate, fg=light-ash}
+\setbeamercolor{frametitle}{bg=dark-charcoal, fg=white}
+\setbeamercolor{title}{bg=steel-blue, fg=light-ash}
+\setbeamercolor{author}{fg=text-black}
+\setbeamercolor{institute}{fg=text-black}
+\setbeamercolor{date}{fg=text-black}
+\setbeamercolor{logo}{bg=gray2}
+
+
+
+% Author, Title, etc.
+\title 
+{%
+  Sommes Restreintes de Chiffres%
+}
+
+
+\author[Yusuf Emin Akpinar]
+{
+	{Yusuf Emin Akpinar\\[1ex]
+	{\small \textbf{Superviseur}: Arnaud Bodin}}
+}
+
+
+
+\date
+{Projet de Fin d'Etudes, 2025}
+\logo{
+\includesvg[width=1cm]{logo.svg}
+}
+
+% Définition des nouveaux environnements de théorèmes
+\usepackage{amsthm} % nécessaire pour \newtheorem
+
+% Define theorem styles with French names
+\newtheorem{thm}{Théorème}
+\newtheorem{lem}{Lemme}
+\newtheorem{prop}{Proposition}
+\newtheorem{cor}{Corollaire}
+\newtheorem{defn}{Définition}
+\newtheorem{exm}{Exemple}
+\newtheorem{rmq}{Remarque}
+
+% The main document
+
+\begin{document}
+
+\begin{frame}{Titre}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Contents}
+  \tableofcontents
+\end{frame}
+
+
+\section{Introduction}
+
+\subsection{Kempner}
+
+\begin{frame}{Constraintes}
+	Quelle contrainte peut-on imposer à une série harmonique pour la rendre
+	convergente ?
+	% Le premier \`a avoir apport\'e une r\'eponse \`a cette question est Kempner.
+	% En 1914, il publie un article intitul\'e \textit{A Curious Convergent
+	% Series}, dans lequel il d\'emontre que la s\'erie harmonique, priv\'ee des
+	% termes dont le d\'enominateur contient le chiffre 9, devient convergente.
+	\begin{block}{Th\'eor\`eme (Kempner, \textit{A Curious Convergent Series},
+		1914)}
+	La somme des inverses des entiers ne contenant pas le chiffre 9 converge :
+	\[ K = \sum_{\substack{n\geq1 \\ \text{9 non dans } n}} \frac{1}{n} < 80. \]
+	\end{block}
+\end{frame}
+
+\begin{frame}{Les travaux de Kempner}
+	Partition de K selon le nombre de chiffres dans le dénominateur.
+
+	\vspace{0.5em}
+
+	\begin{itemize}
+	  \item \( a_1 = 1 + \frac{1}{2} + \cdots + \frac{1}{8} < 8 \cdot 1 \)
+	  \item \( a_2 = \frac{1}{10} + \frac{1}{11} + \cdots + \frac{1}{18} +
+		  \frac{1}{20} + \cdots \frac{1}{28} + \frac{1}{30} + \cdots+
+		  \frac{1}{88} < 8 \cdot 9/10 \)
+	  \item \dots
+	  \item $ a_{n} < 8 \cdot \left(9/10\right)^{n-1}$
+	  \item $K \le 8 \sum_{n} (9/10)^{n} = 80$
+	\end{itemize}
+
+	\vspace{0.5em}
+
+	% Avec une somme geométrique simple, nous avons $K\le 8\cdot 10 = 80$. Alors
+	% on sait que la somme de Kempner converge et plus est petite que 80.
+\end{frame}
+
+
+% \begin{frame}{Majorations des sous-séries \( a_n \)}
+% 	On majore chaque sous-série \( a_n \) en utilisant une borne supérieure sur
+% 	les termes :
+% 	\vspace{0.5em}
+% 	\begin{equation*}
+% 		\begin{split}
+% 			\forall s \in a_1, \; s < 1 \quad &\Rightarrow \quad \sum a_1 = S_1
+% 			< 1 \cdot 8\\
+% 			\forall s \in a_2, \; s < \frac{1}{10^{1}} \quad &\Rightarrow \quad
+% 			\sum a_2 = S_2 < \frac{1}{10} \cdot 8 \cdot 9 = 8 \cdot
+% 			\frac{9}{10}\\
+% 			& \text{  } \vdots\\
+% 			\forall s \in a_{n}, \; s< \frac{1}{10^{n-1}} \quad &\Rightarrow
+% 			\quad \sum a_{n} = S_{n} < 8 \cdot \left(\frac{9}{10}\right)^{n-1}
+% 		\end{split}
+% 	\end{equation*}
+% 	\vspace{0.5em}
+%
+% 	Avec une somme geométrique simple, nous avons $K\le 8\cdot 10 = 80$. Alors
+% 	on sait que la somme de Kempner converge et plus est petite que 80.
+% \end{frame}
+
+\subsection{Irwin}
+
+\begin{frame}{M\'ethode d'Irwin}
+	% Deux ans plus tard, Irwin a trouv\'e une bien meilleure approximation de \(
+	% K \). Il compare les sous-s\'eries \( a_n \) introduites par Kempner.
+	\( a_2 = \frac{1}{10} + \frac{1}{11} + \cdots + \frac{1}{18} + \frac{1}{20}
+	+ \cdots+ \frac{1}{88}	\)\\
+
+	Il compare les neuf premiers termes de $a_{3}$.
+
+	\begin{itemize}
+		\item $1/100 + 1/101 + \dots + 1/108 \le 9 \cdot 1/100=9/10 \cdot 1/10$ 
+		\item $1/110 + 1/111 + \dots + 1/118 \le 9 \cdot 1/110=9/10 \cdot 1/11$
+	\end{itemize}
+	Donc nous avons
+	\[
+		a_{3} \le \frac{9}{10}a_{2}.
+	\]
+	Et plus généralement,
+	\[
+		a_{n} \le \left( \frac{9}{10} \right)^{n-2} a_{2}.
+	\]
+\end{frame}
+
+\begin{frame}{M\'ethode d'Irwin}
+	\[
+		K \le a_{1} + \left[ 1+\frac{9}{10} +\left(\frac{9}{10}\right)^{2} +
+		\dots\right] a_{2} = a_{1} + 10 a_{2}.
+	\]
+	% Irwin a trouv\'e que, $a_{1} \le 2,72$ et $10a_{2} \le 20,58$, donc le
+	% somme, K est plus petite que 23,3.\\
+	\begin{itemize}
+		\item $a_{1} \le 2,72$
+		\item $10a_{2} \le 20,58$
+		\item $K < 23,3$
+		\item $ 22,4 < K < 23,3$
+	\end{itemize}
+
+
+	% Pour la borne inf\'erieure, il applique la m\^eme m\'ethode mais cette fois,
+	% la somme $a_{n}$ est plus grande que $(9/10)^{n-2}a_{2}{'}$ o\`u,
+
+	% \begin{equation*}
+	% 	a_{2}{'} = \frac{1}{11} + \frac{1}{12} + \cdots + \frac{1}{19} +
+	% 	\frac{1}{21} + \frac{1}{22} + \cdots + \frac{1}{29} + \cdots +
+	% 	\frac{1}{81} + \cdots + \frac{1}{89}
+	% \end{equation*}
+	% et, donc la somme est plus grande que,
+	% \[
+	% 	a_{1} + a_{2} + 9\cdot a_{2}{'}
+	% \]
+	% Pour la borne inf\'erieure, qu'il a calcul\'e comme 22,4.\\
+	% Avec ce m\'ethode, j'ai obtenu six chiffres apr\`es la virgule en
+	% commen\c{c}ant \`a partir de \( a_7 \) au lieu de \( a_2 \).
+\end{frame}
+
+\section{Théorème du binôme}
+
+\subsection{Baillie}
+
+\begin{frame}{Estimation de Baillie (1979)}
+	% En 1979, Robert Baillie utilise la formule binomiale pour dériver un formule
+	% récursive pour le somme de Kempner. Il a une idée astucieux de travailler
+	% avec la somme des puissances des inverses et définit :
+	\begin{itemize}
+		\item Formule binomiale
+		\item Puissances des inverses
+		\item Plus g\'en\'eral, pas seulement 9.
+	\end{itemize}
+
+	% \[
+	% 	S_{i+1}=\bigcup_{s\in S_{i}}\{10s,10s+1,\ldots,10s+9\}\backslash\{10s+m\},
+	% \]
+	% et
+	\[
+		s(i+1,j) = \sum_{x\in S_{i+1}}\frac{1}{x^{j}} = \sum_{x\in S_{i}}
+		\sum_{\substack{k=0\\ k\ne m}}^{9} (10x+k)^{-j}.
+	\]
+	% Apr\`es on applique le th\'eor\`eme binomial n\'egatif et on obtient
+	% \[
+	% 	(10x+k)^{-j} = (10x)^{-j}\sum_{n=0}^{\infty} (-1)^{n} \binom{j+n-1}{n}
+	% 	(k/10x)^{n}.
+	% \]
+\end{frame}
+
+\begin{frame}{Estimation de Baillie}
+	Apr\`es les calculs, on obtient,
+	\[
+		s(i+1, j) = \sum_{n=0}^{\infty}a(j,n)s(i, j+n),
+	\]
+	o\`u
+	\begin{align*}
+		&c(j, n) = (-1)^{j} \binom{j+n-1}{n}\\
+		&b_{n}=1^{n}+\ldots + 9^{n} - m^{n} \hspace{20pt} (n\ge0), b_{0} = 9\\
+		&a(j, n) = b_{n}c(j, n)/10^{j+n}.
+	\end{align*}
+	% \begin{exm}
+	% 	\begin{equation*}
+	% 		\begin{split}
+	% 			s(2, 1) &= \sum_{n=0}^{\infty} a(1, n) s(1, 1+n) \\
+	% 					&= a(1, 1)s(1, 2) + a(1, 2)s(1, 3) + \ldots
+	% 		\end{split}
+	% 	\end{equation*}
+	% \end{exm}
+\end{frame}
+
+\begin{frame}{Estimation de Baillie}
+	On a donc,
+	\begin{itemize}
+		\item[\textbullet] Ainsi, pour $i\le4$, on calcule $s(i, j)$ explicitement.
+		\item[\textbullet] Pour $5\le i\le30$, on utilise la formule de r\'ecurrence.
+		\item[\textbullet] Pour $i\ge31$, on va utiliser l'estimation,
+	\end{itemize}
+	\begin{gather*}
+		\sum_{i=31}^{\infty} s(i,1) \approx 9 \cdot s(30, 1) 
+	\end{gather*}
+	\[
+		K = \sum_{i=1}^{\infty} s(i, 1) = 22,92067661926415034816\ldots
+	\]
+\end{frame}
+	
+\subsection{Schmelzer \& Baillie}
+
+% \begin{frame}{Schmelzer \& Baillie (2008)}
+% 	\begin{itemize}
+% 	  \item Extension : motifs très variés (ex. "42", "314").
+% 	  \item Comportement asymptotique de la somme :
+% 	  \[ \lim_{n \to \infty} \frac{\Psi_{X_n}}{10^n} = \frac{10^p}{10^p - 1} \ln(10) \]
+% 	\end{itemize}
+% \end{frame}
+
+\begin{frame}{D\'efinitions de Schmelzer et Baillie}
+	\begin{itemize}
+		\item Motifs plus g\'en\'eral,
+		\item Comportement asymptotique
+		\item $X$ une cha\^{i}ne de $n$ chiffres
+		% \item $S_{i}^{j}$: Les elements de $S_{i}$ qui les derniers $j-1$
+		% 	chiffres sont \'egaux avec premiers $j-1$ chiffres de $X$.
+	\end{itemize} 
+
+	Matrice de $X=9$, cas de Kempner,
+	\begin{equation*}
+			T = 
+		\left[
+			\begin{array}{c|cccccccccc}
+						& 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
+				\hline 1& 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 0 \\
+			\end{array}
+		\right]
+	\end{equation*}
+
+	Matrice de $X=42$,
+	\begin{equation*}
+			T = 
+		\left[
+			\begin{array}{c|cccccccccc}
+						& 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
+				\hline 1& 1 & 1 & 1 & 1 & 2 & 1 & 1 & 1 & 1 & 1 \\
+				2		& 1 & 1 & 0 & 1 & 2 & 1 & 1 & 1 & 1 & 1 \\
+			\end{array}
+		\right]
+	\end{equation*}
+
+	% AJOUTER VALUER DE K POUR X=42.
+	$K = \seqsplit{228.44630415923081325414808612625058957816292753983036118591
+	34600004528607686502143070480461174144321741} \ldots$
+
+	% Soit, X une cha\^{i}ne de $n$ chiffres. On d\'efinit $S_{i}^{j}$ comme
+	% l'ensemble de tous les membres de $S_{i}$ dont les derniers $j-1$ chiffres
+	% sont exactement \'egaux avec les premiers $j-1$ chiffres de $X$, mais dont
+	% les derniers $j$ chiffres sont diff\'erents des premiers $j$ chiffres de
+	% $X$.\\
+\end{frame}
+
+% \begin{frame}[fragile]{Matrice de r\'ecurrence}
+% 	% \begin{equation*}
+% 	% \adjustbox{scale=0.7}{%
+% 	% 	\begin{tikzcd}
+% 	% 		{S^1} && {S^2}
+% 	% 		\arrow[from=1-1, to=1-1, loop, in=145, out=215, distance=10mm]
+% 	% 		\arrow[latex-latex, from=1-1, to=1-3]
+% 	% 		\arrow[latex-latex, no head, from=1-3, to=1-3, loop, in=35, out=325,
+% 	% 		distance=10mm]
+% 	% 	\end{tikzcd}}
+% 	% \end{equation*}
+%
+% 	\vspace{3em}
+%
+%
+% 	% Et nous définissons un tenseur $f$ lié à notre matrice $T$.
+% 	% \[
+% 	% 	f_{jlm} = 
+% 	% 	\begin{cases}
+% 	% 		1 & \text{si }  T(l,m) = j \\
+% 	% 		0 & \text{sinon}.
+% 	% 	\end{cases}
+% 	% \]
+% 	%
+% 	% \[ 
+% 	% 	A_{n} = \begin{pmatrix}
+% 	% 		f_{11m} & \ldots & f_{1nm} \\
+% 	% 		\vdots  &        & \vdots \\
+% 	% 		f_{n1m} & \ldots & f_{nnm} 
+% 	% 	\end{pmatrix}.
+% 	% \]
+% \end{frame}
+
+% \begin{frame}{Troncature}
+% 	Enfin, pour un grand $M$ il a trouve la troncature comme suivant:
+% 	\begin{equation*}
+% 		K \approx \sum_{j=1}^{n}\sum_{i=1}^{M}K_{i}^{j} + \norm{B
+% 		\begin{pmatrix}
+% 			K_{M}^1 \\
+% 			\vdots \\
+% 			K_{M}^n 
+% 		\end{pmatrix}
+% 		}_{1},
+% 	\end{equation*}
+% 	o\`u
+% 	\begin{equation*}
+% 		\begin{split}
+% 			&K_{i}^{j} = \sum_{s\in S_{i}^{j}} \frac{1}{s}\\
+% 			&B = \sum_{k=1}^{\infty}A_{n}^{k}=(I_{n}- A_{n})^{-1}-I_{n}.
+% 		\end{split}
+% 	\end{equation*}
+% \end{frame}
+
+% \begin{frame}[fragile]{Comportement}
+% 	\begin{itemize}
+% 		\item Longueur du motif
+% 		\item Périodicité
+% 	\end{itemize}
+%
+% 	\vspace{3em}
+%
+% 	\begin{table}[ht!]
+% 		\mbox{}\hfill
+% 		\begin{minipage}{0.45\textwidth}
+% 			\vfill{}
+% 			\resizebox{\columnwidth}{!}{%
+% 				\begin{tabular}{@{}r@{\hspace{5mm}}l@{\hspace{5mm}}l@{}}
+% 					\toprule
+% 					$n$ & Cha\^ine $X_n$ & $K/10^n$ \\ \midrule
+% 					20  & 21794968139645396791 & 2,30258 50929 94045 68397 52162\\
+% 					20  & 31850115459210380210 & 2,30258 50929 94045 68399 08824\\
+% 					20  & 67914499976105176602 & 2,30258 50929 94045 68401 09579\\
+% 					20  & 98297963712691768117 & 2,30258 50929 94045 68401 77079\\ \bottomrule
+% 				\end{tabular}%
+% 			}
+% 		\end{minipage}%
+% 		\hfill{}
+% 		\begin{minipage}{0.45\textwidth}
+% 			\vfill{}\ \\
+% 			\resizebox{\columnwidth}{!}{%
+% 				\begin{tabular}{@{}r@{\hspace{5mm}}l@{\hspace{5mm}}l@{}}
+% 					\toprule
+% 					$n$ & Cha\^ine $X_n$ & $K/10^n$ \\ \midrule
+% 					20  & 00000000000000000000 & 2,55842 78811 04495 20443 88506 \\
+% 					20  & 99999999999999999999 & 2,55842 78811 04495 20443 88506 \\
+% 					20  & 42424242424242424242 & 2,32584 35282 76813 82219 89695 \\
+% 					20  & 09090909090909090909 & 2,32584 35282 76813 82221 85405 \\ \bottomrule
+% 				\end{tabular}%
+% 			}
+% 		\end{minipage}\hfill
+% 		\mbox{}
+% 	\end{table}
+% 	% Schmelzer et Baillie ont observé que le résultat ne dépend pas du motif,
+% 	% mais seulement de la longueur et du type du motif.
+% \end{frame}
+
+\section{Theorie de la mesure}
+\subsection{Jean-François Burnol}
+
+\begin{frame}{D\'efinitions: Burnol}
+	\begin{itemize}
+		\item $\A$: Entiers non n\'egatifs admissibles
+		\item $l(n)$: Nombre de chiffres de l'entier n
+		\item $\sum_{n}^{'}$: $\sum_{n \in \A}$
+		\item $\mu = \sum_{l\ge0} 10^{-l}\sum^{'} \delta_{n/10^{l}}$
+
+		\item $\int_{I} f(x)d\mu(x)= \sum_{l\ge0}10^{-l}\sum_{n/10^{l} \in I}^{'}
+			f(n/10^{l})$
+	\end{itemize}
+
+	\vspace{0.5em}
+
+	\[
+		K = \int_{[1/10, 1)} \frac{d\mu(x)}{x}.
+	\]
+
+\end{frame}
+
+\begin{frame}{Th\'eor\`eme Principal}
+	\begin{thm}
+		\[
+			K = \sump_{0<n<10^{l-1}}\frac{1}{n} +
+			10\sump_{l(n)=l}\frac{1}{n} +
+			\sum_{m=1}^{\infty}(-1)^{m}u_{m}\beta_{l, m+1}.
+		\]
+	\end{thm}
+	\[
+		u_{m} = \int_{[0,1)}x^{m}d\mu(x) = \sum_{l\ge0}10^{-l}\sump_{n/10^{l}
+		\in [0,1)} (n/10^{l})^{m} \qquad (m\ge0).
+	\]
+	\vspace{0.5em}
+	\[
+		\beta_{l, m} = \sump_{l(n)=l}n^{-m},
+	\]
+\end{frame}
+
+\begin{frame}{Formula}
+	% \begin{equation*}
+	% 	\begin{split}
+	% 		K &= \sump_{0<n<10^{l-1}} \frac{1}{n} + \sump_{n\ge
+	% 		10^{l-1}}\frac{1}{n}\\
+	% 		  &= \sump_{0<n<10^{l-1}} \frac{1}{n} + \sump_{n\in
+	% 		  [10^{l-1},10^{l})} \sump_{ld_{l}(m)=n}\frac{1}{m}.
+	% 	\end{split}
+	% \end{equation*}
+	\begin{lem}
+	Pour tout $n\in\A$ non nul de longueur $l(n)$,
+	\[
+		\int_{[0, 1)}\frac{1}{n+x} d\mu(x) = \sump_{ld_{l(n)}(m)=n}\frac{1}{m}.
+	\]
+	\end{lem}
+	\[
+		K = \sump_{0<n<10^{l-1}} \frac{1}{n} + \sump_{l(n)=l} \int_{[0,1)}
+		\frac{1}{n+x}d\mu(x)
+	\]
+	La série de Taylor de $(n+x)^{-1}$ nous donne,
+	\[
+		\int_{[0,1)} \frac{1}{n+x} d\mu(x) = \int_{[0, 1)} \sum_{k=0}^{\infty}
+		(-1)^{k} \frac{x^{k-1}}{n^{k}} d\mu(x) = \frac{u_{0}}{n} -
+		\frac{u_{1}}{n^{2}} + \frac{u_{2}}{n^{3}}+\ldots
+	\]
+	% By using this lemma, we can deduce that
+	% En utilisant ce lemme, nous pouvons déduire que
+\end{frame}
+
+% \begin{frame}{Formula}
+% 	\[
+% 		K = \sump_{0<n<10^{l-1}} \frac{1}{n} + \sump_{l(n)=l} \int_{[0,1)}
+% 		\frac{1}{n+x}d\mu(x)
+% 	\]
+% 	La série de Taylor de $(n+x)^{-1}$ nous donne,
+% 	\[
+% 		\int_{[0,1)} \frac{1}{n+x} d\mu(x) = \int_{[0, 1)} \sum_{k=0}^{\infty}
+% 		(-1)^{k} \frac{x^{k-1}}{n^{k}} d\mu(x) = \frac{u_{0}}{n} -
+% 		\frac{u_{1}}{n^{2}} + \frac{u_{2}}{n^{3}}+\ldots
+% 	\]
+% 	% So if we can replace it, we got:
+% 	Donc, si nous le réécrivons, nous avons :
+% 	\begin{equation*}
+% 		\begin{split}
+% 			K &= \sump_{0<n<10^{l-1}} \frac{1}{n} + \sum_{m=0}^{\infty}
+% 			(-1)^{m}u_{m} \sump_{l(n)=l} \frac{1}{n^{m+1}} \\
+% 			  &= \sump_{0<n<10^{l-1}} \frac{1}{n} + \sum_{m=0}^{\infty}
+% 			  (-1)^{m}u_{m} \beta_{l, m+1}.
+% 		\end{split}
+% 	\end{equation*}
+% \end{frame}
+
+\begin{frame}{Observations}
+	% Donc, pour pouvoir calculer la valeur de $K$, nous devons calculer $u_{m}$,
+	% $\beta_{l, m+1}$ et une somme finie de $\frac{1}{n}$, pour un $l$ fixé. En
+	% fait, $\beta$ est aussi une somme finie, donc la vraie difficulté réside
+	% dans le calcul de $u_{m}$. Pour pouvoir calculer $K$, nous avons besoin
+	% d'une formule efficace pour $u_{m}$.
+	Pour calculer $K = \sum_{0<n<10^{l-1}}^{'}\frac{1}{n} + 10 \sum_{l(n)=l}^{'}
+	\frac{1}{n} + \sum_{m=1}^{\infty}(-1)^{m}u_{m}\beta_{l, m+1}$,
+	\begin{itemize}
+		\item Somme finie
+		\item $\beta_{l, m+1}$
+		\item Calcul de $\alert{u_{m}}$ 
+	\end{itemize}
+	% So to be able to compute the value of $K$, we need to compute $u_{m}$,
+	% $beta_{l, m+1}$ and finite sum of $\frac{1}{n}$, for fixed $l$. Actually
+	% $\beta$ is also a finite sum, so the real difficulty lies in the computation
+	% of $u_{m}$. To be able to compute $K$, we need an efficient formula for
+	% $u_{m}$.
+\end{frame}
+
+\begin{frame}{Estimation des moments}
+	\begin{lem}
+		Soit f est une function born\'e sur $[0, 10)$. Alors
+		\[
+			\int_{[0, 1)} f(10x) d\mu(x) = f(0) + \int_{[0, 1)} \frac{1}{10}
+			\sum_{a=0}^{8} f(a+x) d\mu(x).
+		\]
+	\end{lem}
+	% En utilisant de ce lemme, on peut trouver une formule r\'ecursif pour les
+	% moments $u_{m}$. Si on prendre $f(x) = x^{m}$ on a,
+	Prendre $f(x) = x^{m}$.
+	% \[
+	% 	10^{m+1}u_{m} = \int_{[0, 1)} \sum_{a\in A}(a+x)^{m}d\mu(x) =
+	% 	9u_{m} + \sum_{j=1}^{m} \binom{m}{j}u_{m-j}\gamma_{j}.
+	% \]
+	% On a donc,
+	\[
+		(10^{m+1}-9)u_{m} = \sum_{j=1}^{m}\binom{m}{j}\gamma_{j}u_{m-j}, \qquad
+		(m \ge 1).
+	\]
+\end{frame}
+
+\section{Conclusion}
+
+\subsection{Computation et implementation}
+
+\begin{frame}[fragile]{Obstacle}
+	% Premier obstacle que j’ai eu : nous avons besoin de tous les coefficients
+	% binomiaux, donc les calculer à l’aide des fonctions intégrées, qui utilisent
+	% la fonction gamma pour les obtenir directement, est très lent comparé à la
+	% méthode récursive.
+	\begin{itemize}
+	\item Coefficients binomiaux
+	\begin{minted}[bgcolor=LightGray]{python}
+Sagemath prendre 29.60158967300049 secondes.
+Triangle prendre 0.16335931699904904 secondes.
+	\end{minted}
+	\item Le calcul de $\beta$ est facile et parall\'elisable
+	\item Comme \alert{$u_{m}$} est definit de façon r\'ecursive ce n'est pas
+		parall\'elisable.
+	\item Acc\'el\'eration par pr\'ecision dynamique
+	\end{itemize}
+
+% 	\begin{minted}{python}
+% def builtin(limit=1000):
+%     for i in range(1, limit):
+%         for j in range(i):
+%             x = scipy.special.comb(i, j, exact=True)
+% def triangle(limit=1000):
+%     combi = [[1],[1, 1]]
+%     for j in range(2, limit):
+%         L = [1]
+%         for i in range(j):
+%             cur_comb =  combi[j-1][i] + combi[j-1][i-1] 
+%             L.append(cur_comb)
+%         combi.append(L)
+% 	\end{minted}
+\end{frame}
+
+% \begin{frame}[fragile]{Comparaison of methods}
+
+	% \begin{itemize}
+	% 	\item On doit utiliser la methode r\'ecursive
+	% 	\item Nous pouvons utiliser les propriétés symétriques des coefficients
+	% 		binomiaux pour n’en calculer que la moitié.
+	% 	\item Nous pouvons traiter les binomiaux par lots, donc d’abord calculer
+	% 		les $n$ premières lignes, puis écraser ces lignes avec les $n$
+	% 		lignes suivantes.
+	% 	% \item We can use the symmetric properties of binomial coefficients to
+	% 	% 	calculate only half of it.
+	% 	% \item We can batch process the binomials, so first calculate first $n$
+	% 	% 	lines, then override these line with second $n$ lines.
+	% \end{itemize}
+% \end{frame}
+
+% \begin{frame}[fragile]{Calcul de $\beta$}
+% 	\small
+% 	\begin{minted}{c}
+% #pragma omp parallel 
+% {
+%   #pragma omp for
+%   for (int m = 0; m < LIMIT; m++) {
+%     mpfr_init2(betas[m], precisionBits);
+%     mpfr_set_ui(betas[m], 0, MPFR_RNDN);
+%     for (ulongi n = start; n < end; n++) {
+%       if (isAdmissible(n)) {
+%         mpz_ui_pow_ui(power, n, m);
+%         mpfr_div_z(term, one, power, MPFR_RNDN);
+%         int comp = mpfr_cmp(term, betaLimit);
+%         if (comp < 0) {
+%           mpfr_add(betas[m], betas[m], term, MPFR_RNDN);
+%           break;
+%         }
+%         mpfr_add(betas[m], betas[m], term, MPFR_RNDN);
+% }}}} 
+% 	\end{minted}
+% \end{frame}
+
+% \begin{frame}{Calcul de $u_{m}$}
+% 	Le calcul de $\beta$ est à la fois facile et rapide grâce à sa nature
+% 	facilement parallélisable. Cependant, on ne peut pas en dire autant pour
+% 	$u_{m}$. Sa nature récursive ne nous permet pas de paralléliser le
+% 	processus. Nous ne pouvons utiliser le multithreading que partiellement dans
+% 	le calcul de $u_{m}$.
+% \end{frame}
+
+% \begin{frame}{Pr\'ecision dynamique}
+% 	Au fil des calculs les derni\'ers $u_{m}$ ne contribuent qu'aux derniers
+% 	chiffres d\'ecimaux. Donc, nous n'avons pas besoin de calculer tous les
+% 	$u_{m}$ \`a la m\^{e}me pr\'ecision en bits. Nous pouvons r\'eduire
+% 	dynamiquement la pr\'ecision pour calculer \`a la fois les $u_{m}$ et les
+% 	$\beta_{m}$ pour acc\'el\'erer le calcul.
+% \end{frame}
+
+
+% \begin{frame}[fragile]{Calcul de $u_{m}$}
+% 	\tiny
+% 	\begin{minted}{c}
+% void um(mpfr_t u[LIMIT], mpz_t gammas[LIMIT], mpz_t *combi[binomPerLine], int decr) {
+%   int precisionBits = BITS+GUARD;
+%   mpz_t den; mpz_init(den);
+%   mpfr_t denf; mpfr_init2(denf, precisionBits);
+%   mpfr_init2(u[0], precisionBits); mpfr_set_ui(u[0], 10, MPFR_RNDN);
+%   for (int m = 1; m<LIMIT+1; m++) {
+%     if (m % decr == 0) {
+%       int newBits = BITS + GUARD - (int)((double)m/decr) * STEP;
+%       precisionBits = (newBits > 0) ? newBits : precisionBits;
+%     }
+%     mpfr_init2(u[m], precisionBits); mpfr_set_zero(u[m], 0);
+%     mpfr_t sumGlobal; mpfr_init2(sumGlobal, precisionBits);
+%     mpfr_set_ui(sumGlobal, 0, MPFR_RNDN);
+%     #pragma omp parallel
+%     {
+%       mpz_t binomial; mpz_init(binomial);
+%       mpfr_t sumf; mpfr_init2(sumf, precisionBits);
+%       mpfr_t temp; mpfr_init2(temp, precisionBits);
+%       mpfr_set_ui(sumf, 0, MPFR_RNDN);
+% 	\end{minted}
+% \end{frame}
+%
+% \begin{frame}[fragile]{Calcul de $u_{m}$}
+% 	\tiny
+% 	\begin{minted}{c}
+%       #pragma omp for nowait
+%       for (int j = 1; j < m+1; j++) {
+%         #pragma omp critical
+%         {
+%           get_binom(binomial, combi, m, j);
+%         }
+%         mpz_mul(binomial, binomial, gammas[j]);
+%         mpfr_mul_z(temp, u[m-j], binomial, MPFR_RNDN);
+%
+%         mpfr_add(sumf, sumf, temp, MPFR_RNDN);
+%       }
+%       #pragma omp critical
+%       {
+%         mpfr_add(sumGlobal, sumGlobal, sumf, MPFR_RNDN);
+%       }
+%       mpz_clear(binomial);
+%       mpfr_clears(sumf, temp, NULL);
+%     }
+%     mpz_ui_pow_ui(den, 10, m+1);
+%     mpz_sub_ui(den, den, 9);
+%     mpfr_set_z(denf, den, MPFR_RNDN);
+%     mpfr_div(u[m], sumGlobal, denf, MPFR_RNDN);
+%     mpfr_clear(sumGlobal);
+%   }
+%   mpz_clear(den);
+%   mpfr_clear(denf);
+% }
+% 	\end{minted}
+% \end{frame}
+
+\begin{frame}{Resultat (pr\`emi\'ere 2000 termes)}
+\noindent\tiny{\texttt{22.\\
+9206766192 6415034816 3657094375 9319149447 6243699848 1568541998 3565721563
+3818991112 9445626037 4482018989 9096412533 2346922160 4711904783 1029750614
+6968857121 0180678649 3339402886 9627795786 8596119863 7905620169 3218804088
+0170136179 0211062866 1173509921 1021080576 7037858147 1208344258 7658322726
+5762010383 1470760370 3081599962 3544735896 5269056768 8849708196 0327431233
+1458892799 7290413878 4952498149 4420459215 2773507367 0721852000 4083026308
+9161691211 2386263685 9589823575 1717059249 8667879488 4732108924 8065916234
+0101523560 0050654804 3749678309 0130313355 6109695301 4813317749 5576252380
+5629716085 0098435454 7601825342 2157510734 4839216578 2984461954 2391601061
+1783538353 9414385364 5608545221 8993239443 6643879041 5885760914 4227813991
+9999224205 5353569500 6903416817 5189094448 0911928277 8344699965 1712608600
+6663606677 8802880840 6885936480 2875179090 9188136795 1277973480 0336594138
+0076337136 2027592352 3021897838 8060696159 3219106619 2832138116 9578671501
+2908593756 7695180108 1088185294 6961772722 2369263351 0303284693 1322633320
+4662982671 9621921949 7595341302 9846707264 1494803176 1513294759 2059710895
+2767229950 6135926501 6527793966 5504378141 9771218981 1411533178 4288289120
+0861629055 7888948801 9672973398 2154879558 6539443231 1715997509 0536480771
+1452508644 0021477483 7830566983 2947534643 1574887600 2553447060 5016720081
+3537681505 1011744737 0525476106 1212995726 7448260674 6619359970 9646499349
+6193687192 2718731843 2066929586 4568048819 3966538192 5642051018 4836565613
+7014651202 9952508182 0546550025 3512640541 2417351362 7643280141 1344172644
+2573721215 8630804360 6232625102 1258024747 6381362063 5344177907 1562727116
+1327878990 2233978650 7077973087 1328361981 8042590675 8456493642 1334639694
+6418242998 8545122769 8638525759 1169510862 8538843908 9619061464 8926595578
+2873997599 0384755992 0768769694 9762798020 9373018576 2618773856 2079135497
+8209812211 0653711848 5627606686 3650232959 5606375781 3015885853 8424462891
+4371644644 2718250845 0081189605 3012040621 9669846038 5157169114 2506412741
+9331936610 8787735837 2424020359 9203103052 5230441065 4214782842 1259579767
+3879911778 3670920609 0520816896 7959515743 
+}}
+\end{frame}
+
+\end{document}
+
+

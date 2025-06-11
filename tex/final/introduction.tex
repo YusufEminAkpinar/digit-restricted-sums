@@ -1,0 +1,106 @@
+\section{Introduction}
+% \addcontentsline{toc}{chapter}{1. Introduction}
+Il est bien connu que la s\'erie harmonique
+\[
+	\sum_{n=1}^{\infty} \frac{1}{n} = 1 + \frac{1}{2} + \frac{1}{3} +
+	\frac{1}{4} + \cdots
+\]
+qui consiste en la somme infinie de la r\'eciproque des entiers naturels non
+nuls est divergente. Cependant, en 1914, Kempner \cite{kempner} a ajout\'e une
+restriction sur les termes de cette somme et s'est demand\'e ce qu'il se passe
+si on \'elimine les \'el\'ements dont le d\'enominateur contient le chiffre 9.
+C'est-\`a-dire la somme $K = 1 + 1/2 + \cdots + 1/8 + 1/10 + \cdots$. La r\'eponse
+est que la s\'erie converge, ce que Kempner a prouv\'e de mani\`ere simple et
+\'el\'egante. Mais il n'a pas donn\'e d'indication sur la valeur vers laquelle
+cette s\'erie converge, \`a part montrer que cette valeur est inf\'erieure \`a
+90.
+
+% Just after two years, Irwin published his article \cite{irwin} where he cleverly
+% regroups the sum and find new upper and lower bound. Originally, he found
+% correct integer for the sum by hand, and I can find up to 6 decimal points using
+% computers.
+Deux ans plus tard, Irwin a publi\'e son article \cite{irwin} dans lequel il
+regroupe les termes de la somme et trouve de nouvelles bornes sup\'erieures et
+inf\'erieures. \`A l'origine, il a trouv\'e correct pour la somme \`a la main,
+et avec sa m\'ethode nous pouvions obtenir jusqu'\`a 6 chiffres apr\`es la
+virgule \`a l'aide d'un ordinateur.
+
+% After, more than 60 years later, Baillie came up for a new and very important
+% key idea to work with $1/x^{j}$ instead of $1/x$ and rewrite $x$ as $10\lfloor
+% x/10 \rfloor + (x\Mod10)$. Then, by using binomial theorem, he created a
+% recurrence relation between the sum of reciprocals and the sums of powers of
+% reciprocals. His clever method will be the key for the rest of the methods. This
+% method can be easily generalized to other digits. Baillie use his method to
+% calculate up to 20 decimal points for all missing digits.
+Soixante ans plus tard, Baillie \cite{baillie} a propos\'e une nouvelle id\'ee
+cl\'e: travailler avec $1/x^{j}$ en lieu de $1/x$ et r\'e\'ecrire l'entier $x$
+comme $10\lfloor x/10 \rfloor + (x\Mod10)$. Puis, en utilisant la formule
+binomiale, il cr\'ee une relation r\'ecurrence entre la somme des inverses et la
+somme de puissances des inverses. Sa m\'ethode astucieuse sera la cl\'e pour le
+reste des m\'ethodes. Cette m\'ethode peut \^{e}tre g\'en\'eralis\'ee pour les
+autres chiffres. Baillie utilise sa m\'ethode pour calculer jusqu'\`a 20 chiffres
+apr\`es la virgule pour le probl\`eme original et des variantes.
+
+% Then, Fischer turn back to the original question and leave the generalizations
+% behind. Fischer worked with the function $1/(m+x)$ and proposed two different
+% approach for calculation of Kempner Sum. In first method, he uses advanced tools
+% in analysis such as Digamma Function and Riemann Zeta Function and found another
+% recursive formula to calculate the values by a very simple recursion formula. In
+% his second method, he uses Chebyshev Polynomials of the first kind to squeez the
+% sum into an upper and lower limit for the sum. His methods was extremely fast
+% but can not be easily generalized into other cases than Kempner.
+Puis, Fischer \cite{fischer} retourne à la question originale et laisse les
+généralisations de côté. Fischer a travaillé avec la fonction $1/(m+x)$. En
+définissant un op\'erateur lin\'eaire, il a proposé deux approches différentes pour
+le calcul de la somme de Kempner. Dans la première méthode, il utilise des
+outils avancés en analyse tels que la fonction digamma et la fonction zêta de
+Riemann et a trouvé une autre formule pour calculer les valeurs par une
+récurrence très simple. Dans sa deuxième méthode, il utilise les polynômes de
+Chebyshev afin d'encadrer la somme entre une borne supérieure et une borne
+inférieure. Ces méthodes sont extrêmement rapides mais ne peuvent pas être
+généralisées facilement à d'autres cas que celui de Kempner.
+
+% After Fischer's incredible work, Baillie works with Schmelzer to find a new
+% algorithm to generalize the constraints which results in a faster algorithm.
+% They mainly use Matrix Theory, Linear Algebra and a little bit Graph Theory in
+% their article. They also mentioned the asymptotic behaviour of the digit
+% restricted sequences, which proposed that no matter what is the restriction they
+% put, the final result is depends on the period of the motif.
+Apr\`es le travail de Fisher, Baillie travaille avec Schmelzer \cite{schmelzer}
+pour trouver un nouvel algorithme qui g\'en\'eralise les contraintes possibles.
+Les motifs permis par Schmelzer sont très variés, par exemple au lieu de juste
+un chiffre, cette méthode de Schmelzer \& Baillie nous permet de restreindre
+tous les entiers qui contient le motif “314”. Ils utilisent principalement
+de l'alg\`ebre lin\'eaire matricielle, et la th\'eorie de graphes.
+Ils mentionnent \'egalement le comportement asymptotique de la suite
+restreinte de chiffres. Ils ont propos\'e que, le r\'esultat final ne
+d\'epend que de la periode du motif de restriction.
+
+% And finally, Jean-François Burnol came to the scene and put a state of the art
+% algorithm for today's standarts. He generalized Fischer's method with the usage
+% of measure theory, with his method, we have reached 100 000 digits accuracy. The
+% measure he defined, comes from the probabilistic intuition, but we can also see
+% that it is a solution to the Hausdorff moment problem for $\alpha_{n}$'s Fischer
+% used. Monsieur Burnol also used moments extensively in his algorithm just like
+% Fischer. Also the measure defined here also defines a linear functional on
+% continuous functions on the interval $[0, 1]$, which is the same functional
+% Fischer used. So we can say that idea of Monsieur Burnol is further abstracted
+% and generalized version of the Fischer's method. He also mentioned this link
+% between his work and Fischer's at the end of the article.
+Enfin, Jean-François Burnol \cite{burnol} a proposé une formule et un algorithme
+très général et très efficace, à la pointe des connaissances actuelles. Il a
+généralisé la méthode de Fischer avec l’usage de la théorie de la mesure. La
+mesure qu’il a défini vient de l’intuition probabiliste, mais on peut aussi voir
+que c’est une solution au problème des moments de Hausdorff pour les
+$\alpha_{n}$ utilisés par Fischer. Avec sa méthode, nous avons atteint une
+précision de 100 000 chiffres. 
+
+% Monsieur Burnol a aussi utilisé les moments de manière extensive dans son
+% algorithme tout comme Fischer. De plus, la mesure définie ici définit également
+% un fonctionnel linéaire sur les fonctions continues sur l’intervalle $[0, 1]$,
+% qui est le même fonctionnel utilisé par Fischer. On peut donc dire que l’idée de
+% Monsieur Burnol est une version plus abstraite et généralisée de la méthode de
+% Fischer. Il a également mentionné ce lien entre son travail et celui de Fischer
+% à la fin de l’article.
+
+

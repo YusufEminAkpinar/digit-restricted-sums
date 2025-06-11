@@ -1,0 +1,550 @@
+\subsection{Plus rapide \& g\'en\'eral: Jean-François Burnol}
+% \addcontentsline{toc}{section}{Plus Rapide \& G\'en\'eral: Jean-François Burnol}
+% Jean-François Burnol also worked on this problem and found a more efficient and
+% generalized algorithm by using a little measure theory and lots of clever
+% tricks.\\
+% Professor Burnol gives the proof for any base $b$ and and restriction
+% $A$, but we will giving only the case for Kempner Sum here.\\
+Jean-François Burnol a également travaillé sur ce problème en 2024 et a trouvé
+un algorithme plus efficace en utilisant la théorie de mesure et
+d'int\'egration.\\
+\indent Professeur Burnol donne la preuve, \cite{burnol} pour toute base $b$ et
+tout ensemble de restriction $A$, mais nous ne donnerons ici que le cas de la
+somme de Kempner.\\
+% \indent Now, we must introduce a few notation. First and foremost, we define
+% the set of \textit{admissible} digits $A$  as a subset of the set of $b$-ary
+% digits $\{d\in\Z, 0\le d<b\}$. Also let,
+\indent Maintenant, nous devons introduire quelques notations. Tout d'abord,
+nous définissons l'ensemble des chiffres \textit{admissibles} $A$ comme un
+sous-ensemble de l'ensemble des chiffres en base de $b$, $\{d\in\Z, 0\le d<b\}$.
+Aussi soit,
+\begin{equation}
+	K(A) = \sump_{n>0}\frac{1}{n},
+	\label{eq:kburnol}
+\end{equation}
+o\`u le symbole prime $'$ indique que le nombre naturel $n$ est ajout\'e \`a la
+somme si, est seulement si, tous les chiffres appartiennent à l’ensemble $A$
+d\'efini ci-dessus. Bien s\^{u}r, une entier positif est dit admissible si sa
+repr\'esentation d\'ecimale contient uniquement des chiffres admissibles. Aussi,
+soit $\A$ l'ensemble des entiers non n\'egatifs admissibles. Alors la sommation
+avec le symbole prime $\sump_{n}$ signifie que $n\in\A$. Nous d\'efinissons
+\'egalement $N = \#A$ and $N_{1} = \#(A \backslash \{0\})$. Le regroupement par
+nombre de chiffres est toujours utilis\'e depuis l'article original de Kempner
+\cite{kempner} et aussi dans l'algorithme de Baillie \cite{baillie}, nous avons
+donc besoin d'une notation pour repr\'esenter le nombre de chiffres d'un entier.
+Soit $l(n)$ le nombre de chiffres de l'entier $n$. En d'autres termes, $l(n)$
+est l'\'exposant plus petit non n\'egatif $l$ tel que $n<b^{l}$. Maintenant,
+nous d\'efinissons deux quantit\'es pour le th\'eor\`eme principal.
+% where the prime symbol $'$ indicated that natural number n is added to the sum if
+% and only if all of it's digits are from the set $A$ defined above. Of course a
+% positive integer is called \textit{admissible} if it's decimal representation
+% having admissible digits. We also set $\A$ be the set of admissible non
+% negative integers. So prime summation symbol $\sump_{n}$ means that $n\in\A$.
+% Also let $N = \#A$ and $N_{1} = \#(A \backslash \{0\})$. Grouping
+% integer is always the case since Kempner original paper \cite{kempner} and
+% Baillie's algorithm \cite{baillie}, so we need another notation to represent
+% number of digits of an integer. Let $l(n)$ denote the number digits of integer
+% $n$, or in another words $l(n)$ is smallest non negative exponent $l$ such that
+% $n<b^{l}$. Now for main theorem, we define our two quantities.
+\begin{equation}
+	\beta_{l, m} = \sump_{l(n)=l}n^{-m},
+	\label{eq:betaburnol}
+\end{equation}
+% and
+et
+\begin{equation}
+	\gamma_{j} = \begin{cases}
+		\textstyle\sump_{l(n)=1}n^{j} & (j\ge1), \\
+		N & (j=0).
+	\end{cases}
+	\label{eq:gammaburnol}
+\end{equation}
+% Now we are ready to present the result.
+Maintenant, nous pouvons pr\'esenter le r\'esultat.
+\begin{thm}
+	% Let $l\ge1$ be arbitrarily chose. Let  $K=\sump_{n>0}\frac{1}{n}$. Then,
+	Soit $l\ge1$ choisi arbitrairement. Soit $K=\sump_{n>0}\frac{1}{n}$. Alors,
+	\begin{itemize}
+		\item[(a)]
+			% The "Kempner sum" $K$ can be calculated with:
+			Le "Somme de Kempner" $K$ peut etre calcul\'ee avec:
+			\begin{equation}
+				K = \sump_{0<n<b^{l-1}}\frac{1}{n} + \frac{b}{b-N}\sump_{l(n)=l}\frac{1}{n}a + \sum_{m=1}^{\infty}(-1)^{m}u_{m}\beta_{l, m+1}.
+				% K = \sump_{0<n<b^{l-1}}\frac{1}{n} + 10\sump_{l(n)=l}\frac{1}{n} + \sum_{m=1}^{\infty}(-1)^{m}u_{m}\beta_{l, m+1}.
+				\label{eq:solutionkburnol}
+			\end{equation}
+			% And $u_{m}$'s, are determined by the $u_{0} = 10$ and
+			% And $u_{m}$'s, are determined by the $u_{0} = \frac{b}{b-N}$ and
+			O\`u les $u_{m}$ sont d\'etermin\'es par $u_{0} = \frac{b}{b-N}$ et
+			la relation de récurrence,
+			\begin{equation}
+				(b^{m+1}-N)u_{m} = \sum_{j=1}^{m}\binom{m}{j}\gamma_{j}u_{m-j}, \qquad (m\ge1).
+				\label{eq:umburnol}
+			\end{equation}
+
+		% \item[(b)] The quantities $\lambda_{m+1}$ implicitly defined by
+		\item[(b)] Les quantit\'es $\lambda_{m+1}$ implicitement d\'efinies par
+			\begin{equation}
+				u_{m} = \frac{\lambda_{m+1}}{m+1}\left( \frac{max A}{b-1} \right)^{m}\frac{b}{b-N},
+				% u_{m} = \frac{\lambda_{m+1}}{m+1}\left( \frac{max A}{b-1} \right)^{m}10,
+				\label{eq:lambdaburnol}
+			\end{equation}
+			Satifait $\lambda_{1} = 1$ et $\lambda_{m+1} < 1$ pour $m \ge 1$.
+		\item[(c)] La convergence de (\ref{eq:solutionkburnol}) est born\'ee
+			g\'eom\'etriquement sauf pour $l=1$, $1\in A$ et $b-1 \in A$ en
+			m\^eme temps.
+			% Satisfy $\lambda_{1} = 1$ and $\lambda_{m+1} < 1$ for $m \ge 1$.
+			% Also $\lambda_{m+1}/(m+1)$ are decreasing towards zero.
+		% \item[(c)] The convergence of (\ref{eq:solutionkburnol}) is bounded
+			% geometrically except $l=1$, $1\in A$ and $b-1 \in A$ at the same
+			% time.
+	\end{itemize}
+	\label{thm:resultburnol}
+\end{thm}
+Le calcul de $u_{m}$ prendre beaucoup plus de temps que les autres calculs.
+Comme $u_{m}$ est d\'efini par nature r\'ecursive, le calcul ne peut pas
+facilement parall\'elis\'e.
+% The computation of $u_{m}$'s are taking more time than any other computation
+% because of the recursive nature of the $u_{m}$, it's computation can not be
+% parallelized.
+
+% \subsubsection{Kempner Sums As Integrals}
+% \addcontentsline{toc}{subsection}{Kempner Sums As Integrals}
+\subsubsection{Somme de Kempner comme int\'egrales}
+% \addcontentsline{toc}{subsection}{Somme de Kempner Comme Int\'egrales}
+Dans cette section, nous voulons relier le $K$ en (\ref{eq:kburnol}) \`a une
+int\'egrale. Pour cet objectif, nous d\'efinissons une mesure $\mu$ sur $[0,
+\infty)$ ainsi:
+% mais premi\`erement, on a besoin de donner une autre definition. 
+
+% In this section we want to relate our $K$ in (\ref{eq:kburnol}) as an integral.
+% To achive this we will define a measure but first we will give another
+% definition. A measure $\mu$ on the real line $\R$ with $\mu(\R)=c>0$ is said to
+% be \textit{Dirac point mass} if there exists some $x$ with $\mu(\{x\})=c$. Then
+% we will use the notation $\mu = c\delta_{x}$. This $\delta_{x}$ is called the
+% "Dirac distribution at $x$". So we define $\mu$ on $[0, \infty)$ as following,
+\begin{equation}
+	% \mu = \sum_{l\ge0} 10^{-l}\sump \delta_{n/10^{l}}
+	\mu =
+	\begin{cases}
+		\displaystyle
+		\sum_{l\ge0} b^{-l}\sump \delta_{n/b^{l}} & \text{si } 0\in A, \\
+		\displaystyle
+		\sump \delta_{n} + \sum_{l\ge1}b^{-l} \sump_{n\ge b^{l-1}}
+		\delta_{n/b^{l}} & \text{si } 0\notin A.
+		% \sum_{l\ge0} b^{-l}\sump_{l(n)\ge l} \delta_{n/b^{l}} & \text{si} 0\notin A \\
+	\end{cases}
+	\label{eq:muburnol}
+\end{equation}
+M\^{e}me si nous avons donn\'e la formule pour $\mu$ en g\'en\'eral, nous allons
+prouver les th\'eor\`emes pour seulement la cas de Kempner ($A = \{0, 1, 2, 3,
+4, 5, 6, 7, 8\}$, $b = 10$, $N = 9$). Alors, $\mu = \sum_{l\ge0}10^{-l} \sum^{'}
+\delta_{n/10^{l}}$ dans ce cas, et l'int\'egrale est d\'efinie comme,
+\begin{equation}
+	\int_{I} f(x)d\mu(x)= \sum_{l\ge0}10^{-l}\sump_{n/10^{l} \in I} f(n/10^{l}).
+	\label{eq:integraldefn}
+\end{equation}
+Avant tout autre chose, mettons K en relation avec une int\'egrale,
+% Even though we just gave the formula for $\mu$ in general, we will prove the
+% theorems for only the case of Kempner Series ($0\in A$). Now its time to
+% express $K$ with an integral,
+\begin{equation}
+	\int_{[\frac{1}{10}, 1)} \frac{d\mu(x)}{x} = \sum_{l\ge
+	0}\frac{1}{10^{l}}\sump_{\frac{n}{10^{l}}\in [\frac{1}{10}, 1)}
+	\frac{10^{l}}{n} = \sum_{l\ge0} 10^{-l} \sump_{n\in [10^{l-1}, 10^{l})}
+	\frac{10^{l}}{n} = \sump_{n>0} \frac{1}{n} = K
+	\label{eq:kintegralburnol}
+\end{equation}
+Ainsi, une approximation de $x^{-1}$ avec une polyn\^{o}me sur l'intervalle
+$[0.1, 1]$, nous donnerait l'approximation de K. Dans ce memoire, nous
+travaillerons aves les moments de $\mu$ sur $[0, 1)$.
+% So, approximation of $x^{-1}$ by a polinomial on the interval $[b^{-1}, 1]$
+% will give us the approximation of $K$. In this paper we will work with the
+% moments of $\mu$ on $[0, 1)$:
+\begin{equation}
+	u_{m} = \int_{[0,1)}x^{m}d\mu(x) \qquad (m\ge0).
+	\label{eq:momentburnol}
+\end{equation}
+Car $u_{m} \le u_{0}$, pour montrer que $u_{m}$ est fini pour tout $m$, nous
+montrerons que $u_{0}$ l'est.
+% To show that all $u_{m}$'s are finite, we will check that $u_{0}$ is. %Suppose
+% $0\in A$. Then
+\[
+	% u_{0} = \mu([0, 1)) = \sum_{l\ge 0}b^{-l} \left| \{n\in \A, n<b^{l}\}
+	% \right| = \sum_{l\ge0}b^{-l}N^{l} = \frac{b}{b-N}.
+	u_{0} = \mu([0, 1)) = \sum_{l\ge 0}10^{-l} \left| \{n\in \A, n<10^{l}\}
+	\right| = \sum_{l\ge0}10^{-l}9^{l} = 10.
+\]
+% Otherwise if $0\notin A$, we have
+% \[
+% 	u_{0} = \mu([0, 1)) = 1 + \sum_{l\ge1}b^{-l} \left| \{n\in \A, b^{l-1}\ge
+% 	n<b^{l}\} \right| = 1 + \sum_{l\ge1}b^{-l}N^{l} = \frac{b}{b-N}.
+% \]
+% This means $u_{0} = b/(b-N)$. Now we will talk about the support of $\mu$.
+Cela signifie que $u_{0} = 10$. Nous allons maintenant parler du support de
+$\mu$. Formellement, le support d'une mesure est l'ensemble de tous les points
+$x$ ayant $\mu(U)>0$ pour chaque ensemble ouvert $U$ contenant $x$
+\cite[D\'efinition 2.1]{measure}.\\
+% This means $u_{0} = 10$. Now we will talk about the support of $\mu$. Formally
+% speaking a support of a measure is the set off all points $x$ having $\mu(U)>0$
+% for each open set $U$ containing $x$ (\cite{measure}, D\'efinition 2.1).\\ 
+
+Ici, $x\in \Q_{>0}$ est dans le support de $\mu$ si et seulement si sa fraction
+irréductible peut être écrite sous la forme $n/10^{l}$ où $n\in\A$. De plus, si
+$n/10^{l}$ est dans supp($\mu$), $n/10^{l+1}$ est aussi dans supp($\mu$). Le
+poids total à l'origine est donc $1+ 10^{-1} + \ldots = 10/9$. Si $x$ est dans
+supp($\mu$) et n'est pas un entier, alors $10x$ est aussi dans supp($\mu$) et
+le poids de $\delta_{10x}$ est $10$ fois $\delta_{x}$.
+% $x\in \Q_{>0}$ is in the support of $\mu$ if only if it's irreducible fraction
+% is can be written as $n/10^{l}$ where $n\in\A$. Also if $n/10^{l}$ is in
+% supp($\mu$) $n/10^{l+1}$ is also in supp($\mu$). So total weight at the origin
+% is $1+ 10^{-1} + \ldots = 10/9$. If $x$ is in the supp($\mu$) and not an
+% integer, then $10x$ is also in the supp($\mu$) with weight of $\delta_{10x}$ is
+% $10$ times $\delta_{x}$.
+
+% If $0\in A$, $x\in \Q_{>0}$ is in the support of $\mu$ if only if it's
+% irreducible fraction is can be written as $n/b^{l}$ where $n\in\A$. Also if
+% $n/b^{l}$ is in supp($\mu$) $n/b^{l+1}$ is also in supp($\mu$). So total weight
+% at the origin is $1+ b^{-1} + \ldots = b/(b-1)$. In the case of $0 \notin A$,
+% support of $\mu$ is still equal to the positive rationals $x$ with irreducible
+% representation as $n/b^{l}$ but with $n$ being a positive admissible integer of
+% length at least $l$. The weight of $\delta_{x}$ for such $x=n/b^{l}$ is
+% $b^{-l}$. So in both cases, if $x$ is in the supp($\mu$) and not an integer,
+% then $bx$ is also in the supp($\mu$) with weight of $\delta_{bx}$ is $b$ times
+% $\delta_{x}$.
+
+\begin{prop}
+	Soit n un entier positif, si $n$ n'est pas admissible, la restriction de
+	$\mu$ à $[n, n+1)$ est z\'ero, sinon c'est la translation par n de la
+	restriction de $\mu$ à $[0, 1)$.
+	% Let n be a positive integer, if $n$ is not admissible the restriction of
+	% $\mu$ to $[n, n+1)$ is zero, otherwise, it is the translate by n of the
+	% restriction of $\mu$ to $[0, 1)$.
+\end{prop}
+\begin{proof}
+	Nous savons que l'entier positif $n$ est dans le support si et seulement
+	s'il est admissible, et le poids dans $\mu$ de $\delta_{n}$ est $10/9$.
+	Supposons maintenant que $x\in (n, n+1)$ soit dans le support si $n > 0$.
+	Sa représentation irréductible doit être $x=m/10^{l}$ avec $m$ admissible
+	et $l \ge 1$. Mais comme $x>1$, $m$ doit $q > l$ chiffres, donc $n$, la
+	partie entière de $x$, est admissible. Ecrivons maintenant $m = 10^{l}n +
+	p$ avec $0 \le p < 10^{l}$. Alors $p$ est également admissible car il est
+	obtenu à partir des $l$ derniers chiffres de $m$. On sait aussi que
+	$10\nmid p$ puisque $10\nmid m$. Donc la différence $y=x-n = p/10^{l}\ dans
+	(0, 1)$ est dans le support de $\mu$. Autre côté, à partir d'un tel
+	$y\in (0, 1)$ dans le support de $\mu$, on l'écrit $p/10^{l}$ pour un
+	certain $p$ admissible, donc $m=10^{l}n+p$ est admissible et $x = y+n =
+	m/10^{l}$ est dans le support de $\mu$.
+	% We know that the positive integer $n$ is in the support if and only if it
+	% is admissible, and the weight in $\mu$ of $\delta_{n}$ is $10/9$. So now
+	% suppose that $x\in (n, n+1)$ is in the support while $n > 0$. Its
+	% irreducible representation has to be $x=m/10^{l}$ with $m$ admissible and
+	% $l \ge 1$. But as $x>1$, m has to be $q > l$ digits, so $n$, the integer
+	% part of $x$, is admissible. Let us now write $m = 10^{l}n + p$ with $0 \le
+	% p < 10^{l}$. Then $p$ is also admissible because it is obtained from the
+	% last $l$ digits of $m$. We also know that $10\nmid p$ since $10\nmid m$. So
+	% the difference $y=x-n = p/10^{l}\in (0, 1)$ is in the support of $\mu$.
+	% Other way, starting from such $y\in (0, 1)$ in the support of $\mu$. It
+	% is written as $p/10^{l}$ for some admissible $p$, so $m=10^{l}n+p$ is
+	% admissible and $x = y+n = m/10^{l}$ is in the support of $\mu$.
+
+	% We know that the positive integer $n$ is in the support if and only if it
+	% is admissible, and the weight in $\mu$ of $\delta_{n}$ is $b/(b-1)$. So now
+	% suppose that $x\in (n, n+1)$ is in the support while $n > 0$. Its irreducible
+	% representation has to be $x=m/b^{l}$ with $m$ admissible and $l \ge 1$. But
+	% as $x>1$, m has to be $q > l$ digits, so $n$, the integer part of $x$, is
+	% admissible. Let us now write $m = b^{l}n + p$ with $0 \le p < b^{l}$. Then
+	% $p$ is also admissible because it is obtained from the last $l$ digits of
+	% $m$. We also know that $b\nmid p$ since $b\nmid m$. So the difference
+	% $y=x-n = p/b^{l}\in (0, 1)$ is in the support of $\mu$. Other way, starting
+	% from such $y\in (0, 1)$ in the support of $\mu$. It is written as $p/b^{l}$
+	% for some admissible $p$, so $m=b^{l}n+p$ is admissible and $x = y+n =
+	% m/b^{l}$ is in the support of $\mu$.
+\end{proof}
+Soit $m$ un entier positif avec au moins $l$ chiffres et $ld_{l}(m)$ l'entier dans
+$[10^{l-1}, 10^{l})$ partageant avec $m$ ses $l$ chiffres de tête. Si
+$m\in\A$, évidemment $ld_{l}(m)\in\A$.
+% Let m be a positive integer with at least l digits and $ld_{l}(m)$ be the
+% integer in $[10^{l-1}, 10^{l})$ sharing with m its $l$ leading digits. If
+% $m\in\A$, obviously $ld_{l}(m)\in\A$.
+\begin{lem}
+Pour tout $n\in\A$ non nul de longueur $l(n)$,
+% For any non zero $n\in\A$ of length $l(n)$,
+\[
+	\int_{[0, 1)}\frac{1}{n+x} d\mu(x) = \sump_{ld_{l(n)}(m)=n}\frac{1}{m}.
+\]
+\label{lem:lemmaburnol}
+\end{lem}
+\begin{proof}
+	% PLACEHOLDER 2.
+	Si prendre l'int\'egrale en utilisant (\ref{eq:integraldefn}), on obtient,
+	\[
+		\sum_{l\ge0} 10^{-l} \sump_{p/10^{l}\in[0, 1)}
+		\frac{1}{(n+p/10^{l})}.
+	\]
+	Ici, $l=0$ ne contribue que pour $p=0$, ce qui donne $1/n$. Puisque
+	nous pouvons écrire chaque $m$ comme $m=10^{l}n+p$, cela donne une
+	corrélation biunivoque avec ld${}_{l(n)}m = n$ et les paires $(l, p)$ avec
+	$l \ge 1$ et $p<10^{l}$ admissibles. Ceci conclut notre démonstration.
+	% If we expand the integral as a serie, we get $\displaystyle \sum_{l\ge0}
+	% 10^{l} \sump_{p/10^{l}<1} 1/(n+p/10^{l})$. Here $l=0$ contributes only
+	% $p=0$ which gives $\frac{1}{n}$. Since we can write every $m$ as
+	% $m=10^{l}n+p$, this gives direct one-to-one correlation with ld${}_{l(n)}m
+	% = n$ and the pairs $(l, p)$ with $l \ge 1$ and $p<10^{l}$ admissible. This
+	% concludes our proof.
+\end{proof}
+% \subsubsection{The Kempner Sums As Alternating Series}
+% \addcontentsline{toc}{subsection}{The Kempner Sums As Alternating Series}
+\subsubsection{Les sommes de Kempner en tant que séries alternées}
+% \addcontentsline{toc}{subsection}{Les sommes de Kempner en tant que séries alternées}
+% Now we can start to prove our main theorem.
+On peut maintenant commencer à prouver notre théorème principal qui calcul la
+valeur de $K(A)$ en (\ref{eq:kburnol}).
+\begin{thm}
+	% For all $l \ge 1$, $K$ (\ref{eq:kburnol}) has value,
+	Pour tout $l \ge 1$, on a:
+	\begin{equation}
+		K = \sump_{0<n<10^{l-1}} \frac{1}{n} + \sum_{m=0}^{\infty} (-1)^{m}u_{m} \sump_{l(n)=l} \frac{1}{n^{m+1}}.
+		\label{eq:thm4burnol}
+	\end{equation}
+	% Moments of $\mu$ $(u_{m})$ is decreasing and converge to zero.
+	En plus, le moments $(u_{m})$ de $\mu$ est une suite décroissante et converge vers zéro.
+	\label{thm:maineqburnol}
+\end{thm}
+\begin{proof}
+	\ \\
+	\begin{itemize}
+		\item[\textbullet] $u_{m} > u_{m+1}$ est clair de la définition de $u_{m}$
+			(\ref{eq:momentburnol}) puisque le domaine est plus petit que 1:
+			$(u_{m})_{m\in\N}$ est décroissante. Sa convergence vers zéro vient
+			de l'argument suivant, $\forall \eps \in (0,1), \int_{[0, 1)} x^{m}
+			d\mu(x) = \int_{[0, 1-\eps)} x^{m} d\mu(x) + \int_{[1-\eps, 1)}
+			x^{m} d\mu(x) \le (1-\eps)^{m} \int_{[0, 1-\eps)} d\mu(x)
+			+ \int_{[1-\eps, 1)} x^{m} d\mu(x) \underset{\eps \rightarrow
+			0}{\le} (1-\eps)^{m} u_{0} + \mu([1-\eps, 1))$. Ainsi on
+			a $\lim u_{m} = 0$.\\
+	% $u_{m} > u_{m+1}$ is clear from the definition of $u_{m}$
+	% (\ref{eq:momentburnol}) since the domain is smaller than 1, $u_{m}$ is
+	% decreasing. It convergence to zero comes from the following argument,
+	% $\forall \eps \in (0,1), \int_{[0, 1)} x^{m} d\mu(x) = \int_{[0, 1-\eps)}
+	% x^{m} d\mu(x) + \int_{[1-\eps, 1)} x^{m} d\mu(x) \le \linebreak
+	% (1-\eps)^{m} \int_{[0, 1-\eps)} d\mu(x) + \int_{[1-\eps, 1)} x^{m} d\mu(x)
+	% \underset{\eps \rightarrow 0}{\le} (1-\eps)^{m} u_{0} + \mu([1-\eps, 1)$.
+	% And then finally we have $\lim u_{m} = 0$.\\
+
+		\item[\textbullet] D'abord, on s\'epare la somme en deux parties.
+			Contributions de $1/n$, o\`u $n \ge 10^{l-1}$ et $n < 10^{l-1}$. On
+			travaille sur la partie de $n\ge 10^{l-1}$. On a:
+			\[
+				\sump_{n\ge 10^{l-1}} \frac{1}{n} = \sump_{n\in [10^{l-1},
+				10^{l})} \sump_{ld_{l}(m)=n}\frac{1}{m}.
+			\]
+	\end{itemize}
+	Alors, si on combine cette équation avec $n < 10^{l-1}$, on a:
+
+	% First we gather all contributions of $\frac{1}{n}$ from those $n$'s which
+	% are $\ge 10^{l-1}$ because ones which are $\le 10^{l-1}$ are already given
+	% by $ \sump_{0<n<10^{l}} \frac{1}{n}$. This contributions can be written as
+	% $ \sump_{ld_{l(n)}(m)=n} \frac{1}{m} $. Then Lemma \ref{lem:lemmaburnol}
+	% gives us the following expression:\\
+	\begin{equation}
+		\forall l\ge 1 \qquad K= \sump_{0<n<10^{l-1}} \frac{1}{n} +
+		\sump_{l(n)=l} \int_{[0, 1)} \frac{1}{n+x} d\mu(x).
+	\end{equation}
+	Nous pouvons toujours d\'evelopper (pour $n$ positif) en:
+	% We can always expand for positive $n$ as:
+	\[
+		\int_{[0,1)} \frac{1}{n+x} d\mu(x) = \int_{[0, 1)} \sum_{k=0}^{\infty}
+		(-1)^{k} \frac{x^{k-1}}{n^{k}} = \sum_{k=0}^{\infty} \left( \frac{-1}{n}
+		\right)^{k} \int_{[0, 1)}x^{k} = \frac{u_{0}}{n} - \frac{u_{1}}{n^{2}} +
+		\frac{u_{2}}{n^{3}}+\ldots \quad.
+	\]
+	Cette somme alternée fournit une borne supérieure et inférieure pour
+	l'int\'egrale de $(n+x)^{-1}$. Pour $n=1$, puisque $u_{m}$ décroît vers zéro,
+	$\sum (-1)^{m}u_{m}/n^{m+1}$ est aussi convergente. Pour $n>1$, nous
+	pouvons obtenir la convergence en connaissant la convergence uniforme de la
+	série de Taylor sur $[0,1]$ pour $x\mapsto (n+x)^{-1}$. Enfin, en sommant
+	sur tous les entiers admissibles de longueur $l$, nous obtenons la formule
+	de notre théorème.\\
+	% This alternating sum provide upper and lower bound for the integrand
+	% $(n+x)^{-1}$, for $n=1$, since $u_{m}$ decreases to zero, $\sum
+	% (-1)^{m}u_{m}/n^{m+1}$ is also converge. For $n>1$, we can obtain
+	% convergency by knowing the uniform convergence of the Taylor series on
+	% $[0,1]$ for $x\mapsto (n+x)^{-1}$. Finally summing over all admissible
+	% integers of length $l$ gives the formula of our theorem.\\
+\end{proof}
+
+	Le reste du papier explique comment les moments de $\mu$ peuvent être
+	calculés efficacement pour transformer ce Théorème en un algorithme.
+	% The rest of the paper explains how the moments of $\mu$ can be computed
+	% efficiently to transform this Theorem to an algorithm.
+
+	\subsubsection{Estimation des moments}
+	% \addcontentsline{toc}{subsection}{Estimation of Moments}
+	% \subsubsection{Estimation of Moments}
+	% \addcontentsline{toc}{subsection}{Estimation of Moments}
+	Notre r\'esultat principal sur ce sujet est le suivant.
+	% Our key result is the following.\\
+\begin{lem}
+	Soit f est une function born\'e sur $[0, 10)$. Alors
+	% Let f be a bounded function on $[0, b)$. Then
+	% Let f be a bounded function on $[0, 10)$. Then
+	\[
+		\int_{[0, 1)} f(10x) d\mu(x) = f(0) + \int_{[0, 1)} \frac{1}{10}
+		\sum_{a\in A} f(a+x) d\mu(x).
+	\]
+	\label{lem:integralSum}
+\end{lem}
+
+\begin{proof}
+	D'abord, nous devons développer l'intégrale du côté gauche. Elle est égale
+	à $\sum_{l \ge 0} 10^{-l} \sum_{n<10^{l}}^{'} f(10^{1-l}n)$. La
+	condition $l=0$ nous donne seulement $f(0)$, donc nous séparons
+	naturellement cette condition. Puis en changeant l’indice $l$ en $l-1$,
+	nous obtenons,
+	% First, we need to expand the integral in the left hand side. It is equal to
+	% the $\displaystyle\sum_{l \ge 0} 10^{-l} \sump_{n<10^{l}} f(10^{1-l}n)$. The
+	% % the $\displaystyle\sum_{l \ge 0} b^{-l} \sump_{n<b^{l}} f(nb^{1-l})$. The
+	% condition $l=0$ gives us only $f(0)$, so we naturally seperate that
+	% condition. Then changing index $l$ to $l-1$ we get,
+	\[
+		\sum_{l\ge1} 10^{-l} \sump_{n<10^{l}} f(10^{1-l}n) =
+		\sum_{l\ge0} 10^{-1-l} \sump_{n<10^{l+1}} f(10^{-l}n) = 
+		\frac{1}{10} \sum_{l\ge0} 10^{-l} \sump_{n<10^{l+1}} f(10^{-l}n).
+		% \sum_{l\ge1} b^{-l} \sump_{n<b^{l}} f(nb^{1-l}) \mapsto
+		% \sum_{l\ge0} b^{-1-l} \sump_{n<b^{l+1}} f(nb^{-l}) = 
+		% \frac{1}{b} \sum_{l\ge0} b^{-l} \sump_{n<b^{l+1}} f(nb^{-l}).
+	\]
+	Mais le somme avec condition $n<10^{l+1}$ peut \^etre s'\'ecrire comme
+	\[
+		\sump_{n<10^{l}} \sump_{a<10} f(a+10^{-l}n).
+	\]
+	Donc, notre somme devient l'int\'egrale comme,
+	% But the sum with condition $n<10^{l+1}$ can be written as $\sump_{n<10^{l}}
+	% \sump_{a<10} f(a+10^{-l}n)$. So our sum is become the integral just like
+
+	% But the sum with condition $n<b^{l+1}$ can be written as $\sump_{n<b^{l}}
+	% \sump_{a<b} f(a+nb^{-l})$. So our sum is become the integral just like
+	% following.
+	\[
+		\frac{1}{10} \sum_{l\ge0} 10^{-l} \sump_{n<10^{l}} \sump_{a<10} f(a+10^{-l}n) =
+		\int_{[0, 1)} \frac{1}{10}\sump_{a<10}f(a+x)d\mu(x).
+		% \frac{1}{b} \sum_{l\ge0} b^{-l} \sump_{n<b^{l}} \sump_{a<b} f(a+nb^{-l}) =
+		% \int_{[0, 1)} \frac{1}{b}\sump_{a<b}f(a+x)d\mu(x).
+	\]
+\end{proof}
+% We also need to 
+\noindent Nous avons aussi besoin du r\'esultat suivant:
+\begin{prop}
+	% Following relation holds:
+	\[
+		(10^{m+1}-9)u_{m} = \sum_{j=1}^{m}\binom{m}{j}\gamma_{j}u_{m-j}, \qquad
+		(m \ge 1),
+		% (b^{m+1}-N)u_{m} = \sum_{j=1}^{m}\binom{m}{j}\gamma_{j}u_{m-j}, \qquad
+		% (m \ge 1),
+	\]
+	avec $u_{0} = 10$.
+	% with $u_{0} = 10$.
+	\label{prop:umrecursion}
+\end{prop}
+\begin{proof}
+	Nous avons d\'ej\`a calcul\'e la valeur de $u_{0}$. Maintenant, pour la
+	formule générale, nous appliquons le Lemme \ref{lem:integralSum} à la
+	fonction $g(x) = x^{m}$ et obtenons,
+	% We already calculate the value of $u_{0}$. Now for the general formula, we
+	% apply Lemma \ref{lem:integralSum} to the power function and get,
+	\[
+		10^{m+1}u_{m} = \int_{[0, 1)} \sum_{a\in A}(a+x)^{m}d\mu(x) =
+		9u_{m} + \sum_{j=1}^{m} \binom{m}{j}u_{m-j}\gamma_{j}.
+		% b^{m+1}u_{m} = \int_{[0, 1)} \sum_{a\in A}(a+x)^{m}d\mu(x) =
+		% Nu_{m} + \sum_{j=1}^{m} \binom{m}{j}u_{m-j}\gamma_{j}.
+	\]
+	% If we add $-9u_{m}$ to the both side, we get the desired formula.
+	Si nous ajoutons $-9u_{m}$ aux deux c\^ot\'es, nous obtenons le formule
+	d\'esir\'ee.
+\end{proof}
+% \noindent Now we will give the bounds for $\gamma_{m}$.
+\noindent On va maintenant donner les bornes pour $\lambda_{m}$.
+\begin{prop}
+	% Let $\lambda_{m}$ for $m \ge 1$ be defined as:
+	Soit $\lambda_{m}$ pour $m \ge 1$ d\'efini comme suit:
+	\begin{equation}
+		\lambda_{m} = m \left( \frac{9}{8} \right)^{m-1}\frac{u_{m-1}}{u_{0}}.
+	\end{equation}
+	% They satisfy for $m\ge2$,
+	Ils satisfiant pour $m\ge2$,
+	\begin{equation}
+		(10^{m}-9)\lambda_{m} = \sum_{j=1}^{m-1} \binom{m}{j}
+		\frac{9^{j}}{8^{j}} \gamma_{j} \lambda_{m-j}
+	\end{equation}
+	% and the bounds $0.1 < \lambda_{m} < 1$ holds.
+	et on a $\lambda_{m} < 1$.
+\end{prop}%
+\begin{proof}
+	% For the recursion formula, we only need to play with the definition of
+	% $u_{m}$. We know that $u_{m}/u_{0} = \lambda_{m+1} (8/9)^{m} (m+1)^{-1}$. So
+	% if we divide each side of (\ref{eq:umburnol}) with $u_{0}$, we have,
+	Pour la formule de récurrence, nous avons seulement besoin de manipuler avec
+	la définition de $u_{m}$. Nous savons que $u_{m}/u_{0} = \lambda_{m+1}
+	(8/9)^{m} (m+1)^{-1}$. Donc, si nous divisons chaque côté de
+	(\ref{eq:umburnol}) par $u_{0}$, nous avons,
+	\begin{equation*}
+		\begin{split}
+			(10^{m+1}-9)\lambda_{m+1} &= (8/9)^{-m}\sum_{j=1}^{m} \binom{m}{j}
+			\frac{m+1}{m+1-j} \gamma_{j} (8/9)^{m-j} \lambda_{m+1-j} \\
+			&= \sum_{j=1}^{m} \binom{m+1}{j} (9/8)^{j} \lambda_{m+1-j}.
+		\end{split}
+	\end{equation*}
+	Avec un remplacement de $(m+1) \rightarrow m$, on trouve la formule de
+	récurrence désirée pour $\lambda_{m}$.
+	Maintenant, supposons que $m>2$, et que $\lambda_{j} \le 1$ est vrai pour $1 \le j
+	< m$. Alors, on obtient,
+	\begin{equation*}
+		\begin{split}
+			(10^{m}-9)\lambda_{m} &\le \sum_{j=1}^{m-1} \binom{m}{j}\gamma_{j}
+			\left( \frac{9}{8} \right)^{j} = \sum_{a\in A} \sum_{j=0}^{m}
+			\left[\binom{m}{j}\left(\frac{9a}{8}\right)^{j}\right]-1- \left(
+			\frac{9a}{8} \right)^{m} \\
+			&= \sum_{a\in A} \left( \left( \frac{9a}{8} + 1 \right)^{m} -
+			\frac{9^{m}a^{m}}{8^{m}} - 1 \right) 
+		\end{split}
+	\end{equation*}
+	Soit $a' = a-1$. Alors, on a $1 + (9a'/8) = (9a-1)/8 \le 9a/8$. La
+	diff\'erence est $1/8$, puisque pour $a=8$, $(1 + 9a/8)^{m} = (10)^{m}$, et
+	$|A| = 9$, on obtient
+	\[
+		(10^{m} - 9)\lambda_{m} \le 10^{m} - 9(1/8 + 1).
+	\]
+	Ainsi, $\lambda_{m} < 1$.
+	% Pour la borne inf\'erieur, comme $\gamma_{j} \ge 8^{j}$, si l'on d\'efinit
+	% $\xi_{1} = 1$ et pour $m>1$, $\xi_{m}$ avec le r\'ecurrence,
+	% \[
+	% 	(10^{m}-1)\xi_{m} = \sum_{j=1}^{m-1}\binom{m}{j}9^{j}\xi_{m-j}
+	% \]
+	% on a $\lambda_{m} \ge \xi_{m}$ pour tout $m$.
+	%
+	% $\xi_{m}$ est \'etroitement li\'e \`a $\lambda_{m}$. 
+	% They are $\lambda_{m}$'s but when we only permit the digit 9. 
+\end{proof}
+\noindent Maintenant, on peut prouver le th\'eor\`eme (\ref{thm:resultburnol}).
+\begin{proof}
+	L'\'equation (\ref{eq:solutionkburnol}) est une cons\'equence de
+	(\ref{thm:maineqburnol}). La formule de r\'ecurrence (\ref{eq:umburnol})
+	est prouv\'e par la proposition (\ref{prop:umrecursion}).
+
+	Pour la convergence g\'eom\'etrique on doit montrer que $\beta_{l, m+1} =
+	O((1/b^{l-1})^{m})$. Pour cela, $\beta_{l, m+1} = \sump_{l(n) = l} 1/n^{m+1} =
+	\sump_{b^{l-1} le n < b^{l}} 1/n^{m+1}$, on a $n > b^{l-1}$, donc
+	\[
+		\beta_{l, m+1} < \sump (1/b^{l-1})^{m+1} = (b^{l}-b^{l-1})b^{(1-l)(m+1)}
+		= (b-1)/b^{(l-1)m}.
+	\]
+	On a donc $\beta_{l, m+1} = O((1/b^{l-1})^{m})$. De m\^{e}me, on peut
+	\'ecrire 
+	\[
+		u_{m} = \frac{\lambda_{m+1}u_{0}}{(m+1)}\left(\frac{8}{9}\right)^{m}
+		< \frac{u_{0}}{(m+1)}\left(\frac{8}{9}\right)^{m},
+	\]
+	puisque on prouv\'e que $\lambda_{m} < 1$, alors la convergence de $u_{m}$ est
+	plus rapide que la convergence g\'eom\'etrique.
+\end{proof}

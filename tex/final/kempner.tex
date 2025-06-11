@@ -1,0 +1,53 @@
+\section{R\'esultats}
+% \addcontentsline{toc}{chapter}{R\'esultats pr\'eliminaires}
+\subsection{Somme de Kempner}
+% \addcontentsline{toc}{section}{Somme de Kempner}
+En 1914, Kempner a montr\'e le th\'eor\`eme suivant.\cite{kempner}
+\begin{thm}
+	La somme des inverses des entiers sans les termes qui contiennent le chiffre 9 dans
+	leur d\'enominateur, appel\'ee somme de Kempner, converge.
+\end{thm}
+\begin{proof}
+	Tout d'abord, nous partitionnons le somme selon que le nombre de chiffres
+	dans le d\'enominateur et les nommant $S_{i}$. En d'autres termes, $S_{i}$
+	sont les termes de somme de Kempner qui ont exactement $i$ chiffres dans
+	leur d\'enominateur et d\'efinıssons $a_{i}$ comme la somme des termes de
+	$S_{i}$.  Par exemple, les deux premiers termes sont,
+	\begin{equation*}
+		\begin{split}
+			a_1 &= \sum_{s\in S_{1}} s = \frac{1}{1} + \frac{1}{2}
+			+\frac{1}{3} + \cdots +\frac{1}{8} \\ a_2 &= \sum_{s\in S_{2}}
+			s = \frac{1}{10} + \frac{1}{11} + \cdots + \frac{1}{18}
+			+\frac{1}{20} + \cdots + \frac{1}{88}
+		\end{split}
+	\end{equation*}
+
+	La premi\`ere observation que nous devons faire est que pour le premier
+	chiffre, il y a 8 termes, et pour chacun des autres chiffres, il y a 9
+	termes possibles. Nous avons donc 8 termes dans $a_{1}$ et $8\cdot9$ termes
+	dans $a_{2}$. Plus g\'en\'eralement, il y a $8\cdot 9^{n-1}$ termes dans
+	$a_{n}$. La deuxi\`eme observation est \`a propos des bornes des $a_{n}$,
+	nous pouvons voir que tous ces termes sont plus petits que leur premier
+	terme $\frac{1}{10^{n-1}}$. Alors, nous avons obtenu,
+	\begin{equation*}
+		\begin{split}
+			\forall s\in S_{1}, s \le 1 &\Rightarrow a_{1} \le 1 \cdot 8 = 8\\
+			\forall s\in S_{2}, s \le 1/10 &\Rightarrow a_{2} \le \frac{1}{10}
+			\cdot 8 \cdot 9 = 8\cdot \frac{9}{10} \\
+							  &  \vdots \\
+			\forall s\in S_{n}, s \le 1/10^{n-1} &\Rightarrow a_{n} \le
+			\frac{1}{10^{n-1}} \cdot 8 \cdot 9^{n-1} = 8\cdot \left(
+			\frac{9}{10}\right)^{n-1}
+		\end{split}
+	\end{equation*}
+	Avec une somme geom\'etrique simple, nous avons $K\le8\cdot10=80$. Alors on
+	sait que la somme de Kempner converge et plus est petite que 80.
+\end{proof}
+
+Cela semble un peu contre-intuitif, mais c'est juste \`a cause de notre perception.
+\`A premi\`ere vue, nous pensons surtout aux entiers avec un ou deux chiffres,
+par lesquels il semble que juste une petite partie des termes sont \'ecart\'es.
+Mais si nous \'elargissons notre vision \`a des nombres entiers plus grands,
+disons avec 51 chiffres, seulement $\frac{8}{9} \cdot \left(9/10\right)^{50}
+\approx 0,004 = 0,04\%$ n'est pas \'ecart\'e. Donc apr\`es un certain
+temps, presque tous les termes sont \'ecart\'es.

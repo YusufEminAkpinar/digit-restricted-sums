@@ -1,0 +1,157 @@
+\documentclass[12pt]{article}
+
+\usepackage{needspace}
+\usepackage[fleqn]{amsmath}
+\usepackage{tikz, amssymb} 
+\usepackage{amsthm}
+\usepackage{tikz-cd}
+\usepackage{mathabx}
+\usepackage{etoolbox}
+\usepackage[utf8]{inputenc}  
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+% \usepackage{polyglossia}
+% \setdefaultlanguage{french}
+\usepackage{caption, subcaption, wrapfig, float}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xpatch}
+\usepackage{svg}
+\usepackage{mathtools, array, booktabs}
+\usepackage[a4paper, margin=2cm, marginparwidth=0pt]{geometry}
+\usepackage{adjustbox}
+\usepackage{cancel}
+
+\usepackage{layout}
+
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{3}
+
+\newcommand{\Mod}[1]{\ \mathrm{mod}\ #1}
+\newcommand{\defeq}{\vcentcolon=}
+\newcommand{\defcite}[2]{#1~\cite{#2}}
+
+\makeatletter
+\xpatchcmd{\@thm}{\thm@headpunct{.}}{\thm@headpunct{}}{}{}
+\patchcmd{\section}{\if@openright\cleardoublepage\else\clearpage\fi}{}{}{}
+\makeatother
+
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\B}{B_{n}^{\infty}}
+\newcommand{\sump}{\sideset{}{'}\sum}
+
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\newcommand{\nt}[1]{\textcolor{red}{#1}}
+
+\newtheorem{thm}{Th\'{e}or\`{e}me}
+\newtheorem{lem}{Lemme}
+\newtheorem{prop}{Proposition}
+\newtheorem{cor}{Corollary}
+\newtheorem{defn}{D\'{e}finition}
+\newtheorem{conj}{Conjecture}
+\newtheorem{ex}{Exemple}
+\newtheorem{rmk}{Remarque}
+\def\proofname{\textbf{D\'emonstration}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+
+% \renewcommand*\bibname{R\'{e}f\'{e}rences}
+\renewcommand*\refname{R\'{e}f\'{e}rences}
+\renewcommand*\contentsname{Table des Mati\`{e}res}
+% \renewcommand*\sectionname{Chapitre}
+\AtBeginDocument{%
+	\renewcommand{\tablename}{Tableau}
+}
+\allowdisplaybreaks
+
+\begin{document}
+
+\begin{titlepage}
+
+\begin{center}
+
+
+\includesvg[width=2.5cm]{logo.svg}
+
+\addtolength{\voffset}{-1cm}
+
+\addtolength{\textheight}{2cm}
+
+\hspace{-3cm}
+
+\large{\textbf{PROJET DE FIN D'\'ETUDES}}
+
+\vspace{0.5cm}
+
+{\small pour obtenir le dipl\^{o}me de}
+
+\vspace{0.5cm}
+
+l'\,\textsc{\textbf{Universit\'{e} Galatasaray}}
+
+{\small Sp\'{e}cialit\'{e} : \textbf{Math\'{e}matiques}}\\
+
+\vspace{0.75cm}
+
+\vspace{1.5cm}
+
+{\Large\textbf{Sommes Restreintes de Chiffres}}
+
+% {Rapport 4 }
+
+\vspace{1.25cm}
+
+\normalsize \textrm{ Pr\'{e}par\'{e} par } \textbf{Yusuf Emin Akpınar}
+
+\small Responsable : \textbf{ Arnaud Bodin } 
+
+\vspace{0.75cm}
+
+\vspace{1.75cm}
+
+\emph{{{\today}}}
+
+\end{center}
+
+\end{titlepage}
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\newpage
+
+\pagenumbering{arabic}
+
+\input{introduction.tex}
+
+% \input{objective.tex}
+
+\input{kempner.tex} 
+
+\input{irwin.tex}
+
+\input{baillie.tex}
+
+\input{fischer.tex}
+
+\input{schmelzer.tex}
+
+\input{burnol.tex}
+
+\input{conclusion.tex}
+
+\input{ten-thousand.tex}
+
+\pagebreak
+\nocite{*}
+\normalsize
+\bibliographystyle{IEEEtran}
+\bibliography{bibliography}
+
+
+\end{document}

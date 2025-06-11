@@ -1,0 +1,91 @@
+\subsection{Estimation de Baillie}
+% \addcontentsline{toc}{section}{Estimation de Baillie}
+En 1979, Robert Baillie \cite{baillie} utilise la formule binomiale pour
+d\'eriver un formule r\'ecursive pour le somme de Kempner, en plus sa m\'ethode
+peut \^etre g\'en\'eralis\'ee pour d'autres chiffres $m=0,1,\ldots9$. Soit $S$
+l'ensemble des entiers positifs qui n'inclut pas le chiffre $m$ et $S_{i}$
+l'ensemble des entiers de $S$ ayant exactement $i$ chiffres. On d\'efinit
+\begin{equation*}
+	s(i,j) = \sum_{x\in S_{i}}\frac{1}{x^{j}} \qquad (j\ge 1).
+\end{equation*}
+On a $K = \sum_{i\ge 0} s(i, 1)$. On va calculer chaque $s(i, 1)$ par une
+formule de recurrence en de $s(i-1, 1), s(i-1, 2), \cdots$ en utilisant que
+si $j$ est grand, $s(i, j)$ est tr\`es petit.
+\[
+	S_{i+1}=\bigcup_{s\in S_{i}}\{10s,10s+1,\ldots,10s+9\}\backslash\{10s+m\}.
+\]
+On a donc,
+\[
+	s(i+1, j) = \sum_{x\in S_{i}} \sum_{\substack{k=0\\ k\ne m}}^{9}
+	(10x+k)^{-j}.
+\]
+Apr\`es on applique le th\'eor\`eme binomial n\'egatif et on obtient
+\[
+	(10x+k)^{-j} = (10x)^{-j} \left(\frac{k}{10x} + 1\right)^{-j} =
+	(10x)^{-j}\sum_{n=0}^{\infty} (-1)^{n}\binom{j+n-1}{n}1^{-j-n}(k/10x)^{n}.
+\]
+Ainsi, quelle somme devient
+\begin{equation}
+	\begin{split}
+		s(i+1, j) &= \sum_{x\in S_{i}} \sum_{\substack{k=0\\ k\ne m}}^{9}
+		(10x)^{-j} \sum_{n=0}^{\infty} (-1)^{n} \binom{j+n-1}{n} (k/10x)^{n}\\
+		&= \sum_{x\in S_{i}} \sum_{\substack{k=0\\ k\ne m}}^{9} (10x)^{-j}
+		\sum_{n=0}^{\infty} (-1)^{n} \binom{j+n-1}{n} k^{n} (10x)^{-n}
+	\end{split}
+\end{equation}
+Rendons l'\'equation plus claire en faisant quelques d\'efinitions.
+\begin{align*}
+	&c(j, n) = (-1)^{j} \binom{j+n-1}{n}\\
+	&b_{n}=1^{n}+\ldots + 9^{n} - m^{n} \hspace{20pt} (n\ge0), b_{0} = 9\\
+	&a(j, n) = b_{n}c(j, n)/10^{j+n}.
+\end{align*}
+Alors, finalement on a
+\begin{equation}
+	\begin{split}
+		s(i+1, j) &= \sum_{x\in S_{i}}(10x)^{-j}\sum_{n=0}^{\infty} b_{n}c(j,
+		n)(10x)^{-n}\\
+		&=\sum_{x\in S_{i}} \sum_{n=0}^{\infty} a(j,n)x^{-j-n}\\
+		&=\sum_{n=0}^{\infty}a(j,n)s(i, j+n).
+	\end{split}
+	\label{eq:recForm}
+\end{equation}
+Pour les petits $i$, il est possible de calculer $s(i,j)$ directement.
+\begin{itemize}
+	\item[\textbullet] Ainsi, pour $i\le4$, on calcule $s(i, j)$ explicitement.
+	\item[\textbullet] Pour $5\le i\le30$, on utilise la formule de r\'ecurrence
+		dans (\ref{eq:recForm}).
+	\item[\textbullet] Pour $i\ge31$, on va utiliser l'estimation,
+\end{itemize}
+\begin{gather*}
+	\sum_{i=31}^{\infty} s(i,1) \approx 9 \cdot s(30, 1) = a(1,0)\cdot s(30,1).
+\end{gather*}
+% Par exemple, pour calculer $s(6, 1)$, j'ai besoin de $s(5, 1), s(5, 2), \dots,
+% s(5, 11)$, pour $s(5, j)$ j'ai besoin de $s(4, 1), s(4, 2), \ldots$.
+Si on calcule la valeur de $s(4, 11)$, la valeur est inférieure à $10^{-30}$ et
+il est évident que lorsque $i$ ou $j$ (ou $j+n$ dans ce cas) augmente, nous
+obtenons des valeurs de plus en plus petites. Donc, on utilise
+(\ref{eq:recForm}) avec au plus 10 termes. Cette troncature nous permet donc de
+calculer pour au moins 20 chiffres de $K$. Par exemple, dernière ligne du
+tableau représentant la somme sans le chiffre 9, 20 décimales exactes.
+\begin{table}[h!]
+	\centering
+        \resizebox{4.2cm}{!}{%
+	\begin{tabular}{cccccc}
+		$m$ & $S_{m}$ \\ 
+		\midrule
+		0& 23,10344790942054161603\\
+		1& 16,17696952812344426657\\
+		2& 19,25735653280807222453\\
+		3& 20,56987759096123037107\\
+		4& 21,32746579959003668663\\
+		5& 21,83460081229691816340\\
+		6& 22,20559815955609188416\\
+		7& 22,49347531170594539817\\
+		8& 22,72636540267937060283\\
+		9& 22,92067661926415034816\\
+		\bottomrule
+	\end{tabular}%
+    }
+	\caption{Les valeurs sont tir\'ees de \cite{baillie}}
+\end{table}
+\pagebreak

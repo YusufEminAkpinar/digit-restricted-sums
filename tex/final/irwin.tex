@@ -1,0 +1,55 @@
+\subsection{M\'ethode d'Irwin pour les bornes}
+% \addcontentsline{toc}{section}{M\'ethode d'Irwin pour les bornes}
+La s\'erie harmonique diverge tr\`es lentement. De m\^{e}me, la somme de Kempner
+converge tr\`es lentement. On peut voir cela par un calcul de force brute. Il y
+a deux probl\`emes majeurs avec cette m\'ethode. Premi\`erement, elle ne donne
+pas une borne sup\'erieure, et deuxi\`emement elle converge trop lentement. Donc
+en 1916, en plus de la g\'en\'eralisation de la somme de Kempner, Irwin
+\cite{irwin} a donn\'e une borne sup\'erieure et inf\'erieure. Pour
+trouver ces bornes, nous devons examiner les termes $a_{i}$. Nous comparons les
+termes de $a_{2}$ avec les termes de $a_{3}$.
+\begin{equation*}
+	a_{2} = \frac{1}{10} + \frac{1}{11} + \dots + \frac{1}{18} + \frac{1}{20} +
+	\frac{1}{21} + \dots + \frac{1}{28} + \dots + \frac{1}{80} + \dots +
+	\frac{1}{88}.
+\end{equation*}
+Maintenant, on compare les neuf premiers termes de $a_{3}$: $1/100, 1/101,
+\dots, 1/108$, sont tous plus petits que $1/100$ et leur somme est plus petite
+que $9/100$, en d'autres termes ils sont plus petits que $9/10 \cdot 1/10$,
+$9/10$ fois le premier terme de $a_{2}$. Ensuite, on examine les neuf termes
+suivants de $a_{3}$, $1/110, 1/111, \dots, 1/118$, ils sont tous plus petits que
+$1/110$ et leur somme est plus petite que $9/110 = 9/10\cdot 1/11$, soit $9/10$
+fois le deuxi\`eme terme de $a_{2}$. Donc nous avons,
+\[
+	a_{3} \le \frac{9}{10}a_{2}.
+\]
+De la m\^eme mani\`ere, si nous comparons $a_{4}$ avec $a_{2}$, on a $a_{4} \le
+(9/10)^{2} a_{2}$. Et plus g\'en\'eralement,
+\[
+	a_{n} \le \left( \frac{9}{10} \right)^{n-2} a_{2}.
+\]
+Alors la somme est plus petite que,
+\begin{equation*}
+	a_{1} + \left[ 1+\frac{9}{10} +\left(\frac{9}{10}^{2}\right) + \dots\right]
+	a_{2} = a_{1} + 10\cdot a_{2}.
+\end{equation*}
+En 1916, Irwin a trouv\'e que, $a_{1} \le 2,72$ et $10a_{2} \le 20,58$, donc le
+somme, K est plus petite que 23,3.\\
+Pour la borne inf\'erieure, il applique la m\^eme m\'ethode mais cette fois, la
+somme $a_{n}$ est plus grande que $(9/10)^{n-2}a_{2}{'}$ o\`u,
+\begin{equation*}
+	a_{2}{'} = \frac{1}{11} + \frac{1}{12} + \cdots + \frac{1}{19} + \frac{1}{21} +
+	\frac{1}{22} + \cdots + \frac{1}{29} + \cdots + \frac{1}{81} + \cdots +
+	\frac{1}{89}
+\end{equation*}
+et, donc la somme est plus grande que,
+\[
+	a_{1} + a_{2} + 9\cdot a_{2}{'}
+\]
+qu'il a calcul\'e comme 22,4.\\
+Cette m\'ethode peut \^etre am\'elior\'ee \`a l'aide d'un ordinateur (ce
+qu'Irwin ne pouvait pas faire), si nous commençons \`a partir d'un autre rang.
+Si nous commençons avec $a_{7}$ et $a_{7}{'}$, j'ai obtenu comme limite sup\'erieure
+$22,920676635$ et limite inf\'erieure $22,920676598$. En conclusion, cet
+encadrement permet d'obtenir avec certitude les 6 premiers chiffres de $S$
+apr\`es la virgule, $S \approx 22,920676$.

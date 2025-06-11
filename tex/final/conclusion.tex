@@ -1,0 +1,100 @@
+\section{Conclusion}
+% \addcontentsline{toc}{chapter}{Conclusion}
+% \subsection{Les défis informatiques}
+Bien s\^{u}r, j'ai commenc\'e par une m\'ethode de somme directe, j'ai pris des
+sommes partielles jusqu'\`a 4 milliards des termes, mais cela donne environ
+$20.38$. M\^{e}me la partie enti\`ere n'est pas correcte.
+% Initially I start with implementing Irwin's method by calculating $a_{n}$ and
+% $a'_{n}$'s. But after some time, $n = 8$, there is too much number to add and
+% the convergence is too slow. I do that calculation in C, and even that didn't
+% help. After I read the Baillie's article, I implement his method, again in C
+% to boost performance and obtain up to 40 decimal precision, even though it
+% took a bit time to compute. For Fischer's algorithm, I changed to SageMath for
+% both of his methods. They are relevantly easy to implement. I can easily
+% obtain the 100 decimal in my machine in less then a minute. Then, in the
+% implementation of the algorithm of Schmelzer and Baillie, needs to deal with
+% matrices, so I also choose SageMath for easy built-in matrix utilities, and
+% also this is not the \textit{state of the art} algorithm yet, I only need to
+% implement them for completeness and they are rather easy.
+
+Ensuite, j'ai appliqu\'e la m\'ethode d'Irwin en calculant \( a_n \) et \( a'_n
+\). Cependant, au bout d'un certain temps, vers \( n = 8 \), la convergence
+devient trop lente. J'ai effectu\'e ce calcul en C, mais cela ne m'a pas aid\'e
+davantage. J'ai pu obtenir seulement 6 d\'ecimales exactes.
+
+Apr\`es avoir lu l'article de Baillie, j'ai impl\'ement\'e sa m\'ethode,
+toujours en C, pour am\'eliorer les performances et d'obtenu jusqu'\`a 40
+d\'ecimales de pr\'ecision, m\^eme si le calcul a pris un peu de temps, presque
+20 minute sur mon ordinateur.
+
+Pour l'algorithme de Fischer, je suis passé à SageMath pour les deux méthodes.
+Elles sont relativement faciles à impl\'ementer. Sur ma machine, je peux
+facilement obtenir 100 d\'ecimales en moins d'une minute.
+
+Puis, pour l'impl\'ementation de l'algorithme de Schmelzer et Baillie, il faut
+manipuler des matrices, c'est pourquoi j'ai également choisi SageMath pour ses
+utilitaires matriciels intégrés. Ce n'est pas encore l'algorithme le plus
+puissant, mais je l'ai inclus par souci d'exhaustivité, et il est relativement
+simple à programmer.
+
+% Finally, I implement the algorithm of Monsieur Burnol in first SageMath to see
+% if it works as intended, and then re-implement it in C to get more
+% performance. Since I need to calculate lots of digits, I used MPFR and GMP for
+% arbitrary precision libraries. There are some computational difficulties I
+% challenged. For example, we need all binomial coefficients up to some $n$ for
+% the algorithm and since we are computing all of them, using built-in binomial
+% functions results very poor performance, so we need to use recursive
+% calculation of Pascal Triangle to overcome this slowness. Also after some
+% point, the memory started to became a problem. Memorizing all of the Triangle
+% for large $n$'s are very memory consuming, so we need to implement a
+% \textit{forgetful} matrice of binomial to solve the memory problems. Since
+% easiest optimization method is multithreading, I used OpenMP to parallelize
+% the calculation of some parts, ($\beta_{m}$'s and the inner sum of $u_{m}$'s).
+% Calculation of $\beta_{m}$ or $\gamma_{j}$ is easy, especially $\gamma_{j}$ is
+% so simple it almost instantly computes it since for all $j$ they are integers.
+% The calculation of $\beta$'s are also posing no thread to computation since
+% their nature allowing us to parallelize it easily. But the culprit is
+% $u_{m}$'s. Their recursive nature doesn't permit the parallelizing and left me
+% a little window to optimize. However, thanks to the Monsieur Burnol, a little
+% chat and lots of e-mail conversations later, we reached the conclusion of
+% precision can be changed. Last parts of $u_{m}$'s are only contributing last
+% certain number of decimals. So we don't need to calculate all $u_{m}$'s at the
+% same bit precision. We can dynamically reduce the precision for calculating
+% both $u_{m}$'s and $\beta_{m}$'s to speed up process. Indeed, after
+% implementing the \textit{diminishing precision}, we almost have 10x
+% performance. After almost 500 lines of C code, we reached to the point that,
+% we can calculate 100 000 precision within a day even in personal computers.
+Enfin, j'ai impl\'ement\'e l'algorithme de Burnol, premi\`erement en SageMath
+pour voir s'il fonctionne comme pr\'evu, puis je l'ai r\'eimpl\'ement\'e en C
+pour obtenir de meilleures performances. Puisque j'avais besoin de calculer
+beaucoup de chiffres, j'ai utilis\'e MPFR et GMP, les biblioth\`eques de
+pr\'ecision arbitraire. Il y a eu quelques difficult\'es de calcul que j'ai
+rencontr\'ees, par exemple, j'ai eu besoin de tous les coefficients binomiaux
+jusqu'\`a $n$ tr\`es grand et utilis\'e les fonctions binomiales int\'egr\'ees
+donne une performance tr\`es faible, donc j'ai du utiliser le calcul r\'ecursif
+du triangle  Pascal pour surmonter ce probl\`eme. Aussi, apr\`es un certain
+point, la m\'emoire a commenc\'e \`a devenir un probl\`eme. M\'emoriser tout le
+triangle de Pascal pour des grands $n$ consomme beaucoup de m\'emoire, donc j'ai
+impl\'ement\'e une matrice \textit{oubli\'ee} de coefficients binomiaux pour
+r\'esoudre les probl\`emes de m\'emoire. Puisque la m\'ethode d'optimisation le
+plus simple est le \textit{multithreading}, j'ai utilis\'e OpenMP pour
+parall\'eliser le calcul de certaines parties comme $\beta_{m}$ et la somme des
+$u_{m}$. Le calcul de $\beta_{m}$ ou $\gamma_{j}$ est facile, le calcul des
+$\beta_{m}$ ne pose pas non plus de probl\`eme car leur nature nous permet de
+parall\'eliser facilement. Mais le probl\`eme vient des $u_{m}$. Leur nature
+r\'ecursive, ne permet pas le parall\'elisme et m'a laiss\'e peu de marge pour
+optimiser. Cependant, gr\^{a}ce \`a Monsieur Burnol, apr\`es une discussion et
+des conversations par e-mail plus, nous sommes arriv\'es \`a la conclusion que
+la pr\'ecision peut \^{e}tre chang\'ee. Au fil des calculs les derni\'ers
+$u_{m}$ ne contribuent qu'aux derniers chiffres d\'ecimaux. Donc, nous n'avons
+pas besoin de calculer tous les $u_{m}$ \`a la m\^{e}me pr\'ecision en bits.
+Nous pouvons r\'eduire dynamiquement la pr\'ecision pour calculer \`a la fois
+les $u_{m}$ et les $\beta_{m}$ pour acc\'el\'erer le calcul. En effet, apr\`es
+avoir impl\'ementer la \textit{pr\'ecision d\'ecroissante}, nous avons presque
+une performance 10 fois plus rapide. Apr\`es presque 500 lignes de code C,
+j'arrive \`a un point o\`u je peux calculer $K$ avec une pr\'ecision de 100000
+chiffres en un jour m\^{e}me sur un ordinateur personnel. Ces implémentations
+sont disponibles sur la page GitHub de l’auteur
+\footnote{\url{https://github.com/YusufEminAkpinar/digit-restricted-sums}}. Vous
+pouvez aussi trouver les 20000 premiers chiffres dans les pages suivantes.
+\vfill

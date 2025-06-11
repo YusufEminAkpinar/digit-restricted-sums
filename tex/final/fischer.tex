@@ -1,0 +1,331 @@
+\subsection{Plus rapide: Fischer}
+% \addcontentsline{toc}{section}{Plus Rapide: Fischer}
+En 1993, Hans-Jürgen Fischer \cite{fischer} a également travaillé sur les séries
+de Kempner, mais pas sur des généralisations comme celles d'Irwin. Il a
+découvert une méthode incroyablement rapide pour calculer de nombreux chiffres.
+Nous présentons maintenant son idée.
+\subsubsection{Équation de la fonction}
+Soit $M$, l'ensemble des entiers dont les repr\'esentations d\'ecimales ne
+contiennent pas le chiffre 9. Le nombre dans $M$, est soit un nombre à un
+chiffre, qui est l'un de 1, 2, $\ldots$, 8 dans notre cas, soit il est formé en
+ajoutant l'un de ces chiffres à un nombre dans M avec moins de chiffres. Ainsi,
+nous avons :
+% Let $M$ denote the set of integers whose decicmal representation does not contain
+% the digit 9. Number in $M$, is either a single digit number, which is one of
+% 1, 2, $\ldots$, 8 in our case, or it is formed by appending one of these
+% digits to a number in M with fewer digits. Thus we have:
+\begin{equation}
+	M = \{1,2,3,4,5,6,7,8\} \cup \bigcup_{z=0}^8\{10m+z : m\in M\}
+	\label{eq:setM}
+\end{equation}
+% For the precise calculation of the series \( \sum_{m \in M} \frac{1}{m} \), we
+% consider the function
+Pour le calcul pr\'ecis de la s\'erie \( \sum_{m \in M} \frac{1}{m} \), on
+consid\`ere la fonction:
+\[ 
+	s(x) = \sum_{m\in M} \frac{1}{m+x}, x\ge 0, 
+\]
+qui, en raison de la convergence uniforme de la s\'erie pour $x>0$, est bien
+d\'efinie et continue. De l'equation (\ref{eq:setM}), il r\'esulte que
+% which due to the uniform convergence of the series for $x>0$, is well defined
+% and continuous. From equation (\ref{eq:setM}), it follows that
+\begin{equation*}
+	\begin{split}
+		s(x) &= \frac{1}{1+x} + \cdots + \frac{1}{8+x} + \sum_{z=0}^8
+		\sum_{m\in M} \frac{1}{10m+z+x} \\
+			 &= \frac{1}{1+x} + \cdots + \frac{1}{8+x} + \frac{1}{10}
+			 \sum_{z=0}^8\sum_{m\in M} \frac{1}{m+\frac{z+x}{10}} \\
+			 &= \frac{1}{1+x} + \cdots + \frac{1}{8+x} +
+			 \frac{1}{10}\sum_{z=0}^8 s(\frac{z+x}{10}).
+	\end{split}
+\end{equation*}
+% Thus, final equation is,
+Alors, l'\'equation finale est,
+\begin{equation}
+	s(x) - \frac{1}{10}\sum_{z=0}^8 s(\frac{z+x}{10}) = \frac{1}{1+x} + \cdots +
+	\frac{1}{8+x} = r(x).
+	\label{eq:sx}
+\end{equation}
+On definit $r(x)$ comme le c\^{o}t\'e droit de l'\'equation (\ref{eq:sx}).
+Nous pouvons continuer avec l'op\'erateur sur l'espace $C[0,1]$ d\'efini par:
+% Introducing the notation $r(x)$ as an abbreviation for the right-hand side of
+% equation (\ref{eq:sx}), we can proceed with the operator on the space $C[0, 1]$
+% defined by 
+\begin{equation}
+	(Af)(x) = \frac{1}{10}\sum_{z=0}^{8} f(\frac{z+x}{10}).
+	\label{eq:defA}
+\end{equation}
+% This operator allowing equation (\ref{eq:sx}) to be rewritten in the form
+Cet op\'erateur permet de r\'e\'ecrire l'\'equation (\ref{eq:sx}) sous la forme
+\begin{equation}
+	s -As = r
+	\label{eq:shortEq}
+\end{equation}
+\subsubsection{Quelques propri\'et\'es de l'\'equation de l'op\'erateur}
+% \addcontentsline{toc}{subsection}{Quelques Propri\'et\'es de l'\'Equation de l'Op\'erateur}
+% \noindent The follwoing properties of the operator $A$ are easy to verify:
+\noindent Les propri\'et\'es suivantes de l'op\'erateur $A$ sont facile \`a
+v\'erifier.
+\begin{enumerate}
+	\item $A$ est lin\'eaire.
+	\item $\norm{A} = \frac{9}{10} < 1$.
+	\item Si $f$ est non-n\'egatif sur $[0,1]$, alors c'est vrai aussi pour
+		$Af$.
+	\item Si $p_{n}$ est un polyn\^{o}me de degr\'e $n$, alors $Ap_{n}$ est aussi
+		un polyn\^{o}me de degr\'e $n$.
+\end{enumerate}
+Les propri\'et\'es 1, 3 et 4 peuvent etre facilement v\'erifi\'ees en se
+r\'ef\'erant \`a la d\'efinition (\ref{eq:defA}). Pour propri\'et\'e 2, on a,
+% Properties 1, 3 and 4 are can be easily seen by just looking to (\ref{eq:defA}).
+% For 2 we have,
+\[
+	\norm{A}_{op} = \sup \left\{\norm{Af}_{\infty} : \norm{f}_{\infty} =
+	1\right\} = \frac{1}{10} \sum_{z=0}^{8}1 = \frac{9}{10} < 1.
+\]
+% Thus, operator $I-A$ is invertible, where $I$ denotes the identity operator.
+Ainsi, l'op\'erateur $I-A$ est inversible, o\`u $I$ d\'esigne l'op\'erateur
+identit\'e.
+\begin{equation}
+	(I-A)^{-1} = I + A + A^{2} + \ldots 
+	\label{eq:IminAinv}
+\end{equation}
+et
+\[ ||(I-A)^{-1}|| \le (1-||A||)^{-1} = 10 \]
+% Thus the equation,
+Alors l'\'equation,
+\[ (I-A)f = g \]
+% is uniquely solvable in $C[0, 1]$ for any $g\in C[0, 1]$, and our desired
+% function $s(x)$ is uniquely determined by (\ref{eq:sx}) or (\ref{eq:shortEq}).
+% Let $l$ be the function defined by
+admet une solution unique dans $C[0,1]$ pour tout $g\in C[0,1]$, et notre
+fonction d\'esir\'ee $s(x)$ est uniquement d\'etermin\'ee par (\ref{eq:sx}) (ou
+(\ref{eq:shortEq})). Soit $l$ la fonction d\'efinie par
+\[ l(g) = (I-A)^{-1}g(0) \qquad \text{ pour } g\in C[0,1], \]
+% the defined functional, is obviously linear. From property 3 and equation
+% (\ref{eq:IminAinv}), it follow that $g_{1}(x) \le g_{2}(x)$ for all $x \in
+% [0,1]$, then $l(g_{1}) < l(g_{2})$ also holds. Moreover,
+qui est \'evidemment lin\'eaire. De la propri\'et\'e 3 et l'\'equation
+(\ref{eq:IminAinv}), il r\'esulte que $g_{1}(x) \le g_{2}(x)$ pour tout $x \in
+[0, 1]$, alors $l(g_{1}) \le l(g_{2})$ aussi vrai. De plus,
+\begin{equation}
+	\norm{l} \le \norm{(I-A)^{-1}} \le 10 
+	\label{eq:norml}
+\end{equation}
+en raison de
+\[
+	\sum_{m\in M} \frac{1}{m} = s(0) = (I-A)^{-1} r(0) = l(r),
+\]
+Notre t\^{a}che se r\'eduit donc \`a calculer $l(r)$. La base pour cela, puisque
+propri\'et\'e 4, le $l(p)$ pour un polyn\^{o}me $p$ est facile \`a
+calculer, et il est bien connu que les fonctions dans $C[0,1]$ peuvent \^{e}tre
+approch\'ees arbitrairement pr\`es par des polyn\^{o}mes.
+% our task thus boils down to calculating $l(r)$. The basis for this, due to
+% propert 4, the functional $l(p)$ for a polynomial $p$ is easy to compute, and it
+% is well-known that functions in $C[0,1]$ can be approximated arbitrarily closely
+% by polynomials.
+\subsubsection{Deux R\'ecurrences}
+% \addcontentsline{toc}{subsection}{Deux R\'ecursions}
+Pour un polyn\^{o}me donn\'e $p$, le polyn\^{o}me $q = (I-A)^{-1}p$,
+d\'etermin\'e de mani\`ere unique, peut \^{e}tre trouv\'e facilement en
+substituant dans l'\'equation $q-Aq = p$ et en comparant les coefficients. Mais,
+nous seulement int\'eress\'es par $l(p)$, et $p(x)$ peut \^{e}tre \'ecrit comme
+\( a_0 + a_1x + \dots + a_nx^n \) ou de façon \'equivalente comme \( b_0 + b_1(1
+- x) + \dots + b_n(1 - x)^n \), il suffit de d\'eriver des relations
+r\'ecursives pour les suites:
+\[
+	\alpha_{n} = l(x^{n}) \qquad \& \qquad \beta_{n} = l((1-x)^{n})
+\]
+Par d\'efinition, on a \( l((I - A)g) = g(0) \) pour tout $g\in C[0,1]$. Pour un
+$t\in \N$ donn\'e, Soit \( g(x) = (e^{t/10} - 1)e^{tx} \), qui nous donne:
+\begin{equation*}
+	\begin{split}
+		Ag(x) &= \frac{1}{10} (e^{t/10} - 1) \left( e^{tx/10} + \ldots +
+		e^{t(x+8)/10} \right) \\
+		&= \frac{1}{10} (e^{t/10} - 1) e^{tx/10} \left( 1 + e^{t/10} + \ldots +
+		e^{8t/10} \right) \\
+		&= \frac{1}{10} (e^{t/10} - 1) e^{tx/10}
+		\frac{e^{9t/10}-1}{e^{t/10}-1} = \frac{1}{10}(e^{9t/10}-1)e^{tx/10} 
+	\end{split}
+\end{equation*}
+et \`a partir de l\`a,
+\[
+	l \left( (e^{t/10}-1)e^{tx} - \frac{1}{10}(e^{9t/10}-1)e^{tx/10} \right) =
+	e^{t/10}-1
+\]
+D\'eveloppans les deux c\^{o}t\'es en puissances de $t$:
+\begin{align*}
+	&l \left( (e^{t/10}-1)e^{tx} - \frac{1}{10}(e^{9t/10}-1)e^{tx/10} \right) =
+	(e^{t/10} - 1)l( e^{tx})- \frac{1}{10}(e^{9t/10}-1)l(e^{tx/10}) \\
+	&= \left( \sum_{n=1}^{\infty}\frac{t^{n}}{n!10^{n}}\right)
+	\sum_{n=0}^{\infty} \frac{t^{n}}{n!}\alpha_{n} - \left(
+	\sum_{n=1}^{\infty}\frac{9^{n}t^{n}}{n!10^{n}} \right) \sum_{n=0}^{\infty}
+	\frac{t^{n}}{n! 10^{n+1}} \alpha_{n}\\
+	&= \sum_{n=0}^{\infty}t^{n}\sum_{k=1}^{n}
+	\frac{\alpha_{n-k}}{(n-k)!k!10^{k}} - \sum_{n=0}^{\infty} t^{n}
+	\sum_{k=1}^{n} \frac{9^{k}}{k!} \frac{\alpha_{n-k}}{(n-k)!10^{n+1}}\\
+	&= \sum_{n=0}^{\infty} t^{n} \sum_{k=1}^{n} \frac{\alpha_{n-k}}{(n-k)! k!}
+	\left( \frac{1}{10^{k}} - \frac{9^{k}}{10^{n+1}} \right)
+\end{align*}
+D'autre part, $e^{t/10}-1$ peut \^{e}tre \'ecrire comme $\sum_{n=1}^{\infty}
+\frac{t^{n}}{n!10^{n}}$. Apr\`es comparaison des coefficients, on obtient, \\
+\[
+	\sum_{k=1}^{n}\frac{1}{k!(n-k)!}\left( \frac{1}{10^{k}} -
+	\frac{9^{k}}{10^{n+1}} \right)  \alpha_{n-k} = \frac{1}{n!}\frac{1}{10^{n}} 
+\]
+Cette \'equation peut-\^etre \'ecrit sous la forme:
+\begin{equation}
+	\sum_{k=1}^{n} \binom{n}{k}\left(10^{n-k+1}-9^{k}\right) \alpha_{n-k} = 10 
+	\label{eq:alpha}
+\end{equation}
+% ou directement,
+% \begin{equation}
+% 	\alpha_{n} = 
+% \end{equation}
+De l'\'equation (\ref{eq:alpha}), on peut obtenir $\alpha_{0} = 10$,
+$\alpha_{1} = 360/91$, etc. De la m\^{e}me mani\`ere, en utilisant $g(x)
+= (e^{t/10} - 1)e^{t(1-x)}$, on peut obtenir,
+\begin{equation}
+	\sum_{k=1}^{n} \binom{n}{k}\left(10^{n-k+1}-10^{k}+1\right) \beta_{n-k} =
+	10(11^{n}-10^{n}) 
+	\label{eq:beta}
+\end{equation}
+De l'\'equation (\ref{eq:beta}), on peut obtenir $\beta_{0} = 10$, $\beta_{1}
+= 550/91$, etc. Pour appliquer ces r\'esultats \`a l'\'equation (\ref{eq:sx}),
+on a besoin d'approcher $r(x)$ par un polyn\^{o}me. Puisque on recherche $l(r)$
+et on juste trouv\'e comment on peut \'ecrire $l(x^{n})$ pour $n$ arbitraire.
+Mais le d\'eveloppement limit\'e de $r(x)$, converge tr\`es lentement dans
+$[0,1]$. On doit trouver une meilleure solution.
+
+\subsubsection{Une m\'ethode analytique}
+% \addcontentsline{toc}{subsection}{Une M\'ethode Analytique}
+On a trouv\'e une solution unique de l'\'equation (\ref{eq:sx}) dans $C[0,1]$,
+mais il existe des solutions non born\'ees. Par exemple, une solution est
+$-\frac{1}{x}$, et peut \^{e}tre v\'erifi\'ee par substitution. Cela signifie que
+la fonction non born\'ee $s_{1}(x) = s(x) + \frac{1}{x}$ satisfait l'\'equation
+$s_{1}-As_{1}=0$. Cependant, le fonction Digamma, $\psi(x) =
+\frac{\Gamma'(x)}{\Gamma(x)}$ satisfait à l'équation suivante,
+\cite[6.4.8]{handbook}, o\`u $n=0$ \& $m = 10$:
+\begin{equation*}
+	\psi(10x) = \ln(10) + \frac{1}{10}\sum_{k=0}^{9}\psi\left(x +
+	\frac{k}{10}\right) \Rightarrow \psi(x) = \ln(10) +
+	\frac{1}{10}\sum_{k=0}^{9}\psi\left( \frac{x+k}{10}\right).
+\end{equation*}
+Maintenant, on peut voir que la fonction $s_{2}(x)=s_{1}(x) +\psi(x) +\gamma$
+satisfiant l'\'equation,
+% s_2(x) - As_2(x) = \ln(10) + \frac{1}{10} \left[ \psi\frac{x+9}{10} +\gamma
+% \right] = r_1(x)
+\begin{align*}
+		s_{2}(x) - As_{2}(x) &= \cancelto{0}{s_{1} - As_{1}}+ \psi - A\psi +
+		\gamma - A\gamma \\
+		&= \ln(10) + \frac{1}{10}\sum_{k=0}^{9}\psi\left( \frac{x+k}{10} \right)
+		- \frac{1}{10}\sum_{k=0}^{8}\psi\left( \frac{x+k}{10} \right) + \gamma -
+		\frac{9\gamma}{10}\\
+		&= \ln(10) + \frac{1}{10} \left[ \psi\left( \frac{x+9}{10} \right) +
+		\gamma \right] = r_{1}(x).
+\end{align*}
+Aussi, puisque $s_{1}(x) = s(x) + \frac{1}{x}$, on peut remplacer dans $s_{2}$
+et en utilisant \cite[6.3.5]{handbook} on obtient,
+\[
+	s_{2}(x)= s(x) + \frac{1}{x} + \psi(x) + \gamma = s(x) + \psi(x+1) + \gamma.
+\]
+	Alors, $s_{2}$ est aussi en $C[0,1]$, et l'\'equation $s(0) = s_{2}(0) =
+	l(r_{1})$ est vraie gr\^{a}ce \`a \cite[6.3.2]{handbook}. On peut aussi
+	relier $r_{1}$ avec le fonction de zeta avec \cite[6.3.14]{handbook}. Donc,
+\[
+	r_1(x) = \ln(10) + \frac{1}{10}\left[ \psi \left( 1-\frac{1-x}{10} \right)
++\gamma \right] = \ln(10) - \frac{1}{10}\sum_{n=2}^\infty \zeta(n) \left(
+\frac{1-x}{10} \right)^{n-1}.
+\]
+Mais, on recherche $s(0)$, ou de manière équivalente $l(r_{1})$. On a donc:
+\begin{equation*}
+	\begin{split}
+		\sum_{m\in M}\frac{1}{m} &= l(r_{1})=l(\ln(10))-l(\sum_{n=2}^{\infty}
+		\zeta(n) (1-x)^{n-1} 10^{-n}) \\
+		&=\ln(10)l((1-x)^0)-\sum_{n=2}^{\infty}\zeta(n)10^{-n} l((1-x)^{n-1})\\
+		&=\beta_{0}\ln(10) -\sum_{n=2}^{\infty}\zeta(n)10^{-n} \beta_{n-1}
+	\end{split}
+\end{equation*}
+On peut aussi trouver l'erreur de troncature. Puisque $\beta_{n}$ et $\psi_{n}$
+sont decroissantes, le rapport de deux termes est plus petit que $0.1$. Ce
+pourquoi, l'erreur est plus petite que $0.1 + 0.001 + \ldots = 1/9$ fois ea
+dernier terme inclus. Maintenant, on va proposer une nouvelle methode pour
+calculer avec beaucoup plus de precision.
+
+\subsubsection{Approximation de Chebyshev}
+% \addcontentsline{toc}{subsection}{Approximation de Chebyshev}
+\noindent Maintenant on va utiliser les polyn\^{o}mes de Chebyshev de premi\`ere
+esp\`ece,
+\[
+	T_{n}(y) = \cos(n \arccos(y))
+\]
+On a donc,
+\[
+	|T_{n}(y)| \le 1 \quad \text{pour} \quad y\in [-1, 1] \Rightarrow
+	|T_{n}(1-2x)| \le 1 \quad \text{pour} \quad x\in [0, 1].
+\]
+Le polyn\^{o}miel $T_{n+1}(3) - T_{n+1}(1-2x)$ vaut z\'ero quand $x=-1$, donc
+est divisible par $1+x$. Alors on definit $Q_{n}(x)$ comme, $(T_{n+1}(3) -
+T_{n+1}(1-2x))/(1+x)$. On a donc,
+\[
+	\frac{T_{n+1}(3)-1}{1+x} \le \frac{T_{n+1}(3) - T_{n+1}(1-2x)}{1+x} =
+	Q_{n}(x) \le \frac{T_{n+1}(3)+1}{1+x}
+\]
+puisque $|T_{n+1}(1-2x)| \le 1$. Apr\`es, on divise $Q_{n}(x)$ par
+$T_{n+1}(3)$ et on d\'efinit,
+\[
+	\frac{Q_{n}(x)}{T_{n+1}(3)} = \sum_{k=0}^{n} q_{n_{k}} x^{k}
+\]
+on a
+\[
+	\left( 1-\frac{1}{T_{n+1}(3)} \right)\frac{1}{1+x} \le
+	\sum_{k=0}^{n}q_{n_{k}}x^{k} \le \left(
+	1+\frac{1}{T_{n+1}(3)}\right)\frac{1}{1+x} \quad \text{pour} \quad x\in [0,1]
+\]
+et parce que
+\[
+	\frac{1}{m+x} = \frac{1}{m}\frac{1}{1+x/m} \quad \text{pour} \quad m=1,2,...,8
+\]
+En remplaçant $x$ par $x/m$ et en multipliant chaque côté des inégalités
+par $1/m$, on obtient
+\[
+	\left( 1-\frac{1}{T_{n+1}(3)} \right)\frac{1}{m+x} \le
+	\sum_{k=0}^{n}q_{n_{k}}\frac{1}{m^{k+1}}x^{k} \le \left(
+	1+\frac{1}{T_{n+1}(3)}\right)\frac{1}{m+x} \quad \text{pour} \quad x\in
+	[0,1]
+\]
+En sommant ces in\'egalit\'es pour $m=1, \ldots, 8$ et appliquer $l$, on a
+
+\begin{equation}
+	\left( 1-\frac{1}{T_{n+1}(3)} \right)\sum_{m\in M}\frac{1}{m} \le
+	\sum_{k=0}^{n}q_{n_{k}}\alpha_{k}H_{k+1} \le \left(
+	1+\frac{1}{T_{n+1}(3)}\right)\sum_{m\in M}\frac{1}{m} 
+\end{equation}
+o\`u $H_{k+1}$ est d\'efini par,
+\[
+	H_{k} = 1 + \frac{1}{2^{k}} + \ldots + \frac{1}{8^{k}}
+\]
+De plus, en utilisant \cite[1.49]{chebyshev}, on peut r\'e\'ecrire la
+polyn\^{o}me da Chebyshev de premi\`ere esp\`ece de mani\`ere non r\'ecursive. 
+\[
+	T_n(x) = \frac{1}{2} \left[ (x+\sqrt{x^2-1})^n + (x-\sqrt{x^2-1})^n \right]
+\]
+Cette formule nous donne une estimation de degr\'e suffisant pour une
+precision donn\'ee. On a,
+\[
+	T_{n}(3) = \frac{1}{2} ((3+2\sqrt{2})^{n} + (3-2\sqrt{2})^{n}) \approx
+	\frac{1}{2}(3+2\sqrt{2})^{n} \qquad \text{pour les grands } n.
+\]
+Alors si on veut 50 chiffres de pr\'ecision, on doit calculer la polyn\^{o}me de
+degr\'e 70, puisque $T_{70}(3) \approx 10^{53}$, alors,
+\[
+	(1 - 10^{-53})\sum_{m\in M}\frac{1}{m} \le \sum_{k=0}^{n}q_{n_{k}}
+	\alpha_{k}H_{k+1} \le (1 + 10^{-53})\sum_{m\in M}\frac{1}{m}.
+\]
+Si on fait le calcul pour $n = 70$, et le terme d'erreur est $10^{-53}$. On a,\\
+\fbox{\small\texttt{22.9206766192 6415034816 3657094375 9319149447 6243699848
+1586404710 48521259}} \\
+$\le s(0) \le$\\
+\fbox{\small\texttt{22.9206766192 6415034816 3657094375 9319149447 6243699848
+1545840772 76734915}}\\
+Comme on peut voir, on a trouv\'e la valeur de somme pour une pr\'ecision de 52
+chiffres.

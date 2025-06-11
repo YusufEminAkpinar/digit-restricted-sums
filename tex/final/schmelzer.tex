@@ -1,0 +1,548 @@
+\subsection{G\'en\'eralisation de Schmelzer-Baillie}
+% \addcontentsline{toc}{section}{G\'en\'eralisation de Schmelzer-Baillie}
+Kempner a demand\'e ce qui se passerait si l'on restreint le chiffre 9 dans la
+s\'erie harmonique, et on peut naturellement demander ce qui se passera si l'on
+restreint un motif au lieu d'un chiffre. Par exemple, quelle est la somme de
+$1/s$ o\`u $s$ est un nombre naturel qui n'inclut pas le motif "42"? Cette
+question a \'et\'e pos\'ee pour la premi\`ere fois par Bornemann \cite{SIAM}. En
+2008, Schmelzer et Baillie \cite{schmelzer} ont donn\'e une r\'eponse \`a ce
+type de questions et \`a d'autres encore. Avec leur m\'ethode, on peut
+facilement calculer la somme sans le motif "42" ou "314159" ou toute combinaison
+de ces contraintes.
+\subsubsection{Matrices de r\'ecurrence}
+% \addcontentsline{toc}{subsection}{Matrices de r\'ecurrence}
+\begin{defn}
+	Soient $X$ une chaîne de $n$ chiffres, et $S$ l'ensemble des nombres
+	naturels qui n'incluent pas $X$ en base 10. Alors
+	\[
+		\Psi = \sum_{x\in S} \frac{1}{s}.
+	\]
+\end{defn}
+
+On d\'efinit ensuite $S_{i}$ comme l'ensemble des entiers de $S$ qui ont
+exactement $i$ chiffres. On peut aussi partitionner $S_{i}$ en $S_{i}^{j}$ pour
+$j=1,2,\ldots,n$ tel qu'il y a une relation de r\'ecurrence entre
+$S_{i+1}^{j}$ et les ensembles $S_{i}^{1},\ldots, S_{i}^{n}$. Donc on d\'efinit
+$S_{i}^{j}$ comme l'ensemble de tous les membres de $S_{i}$ dont les derniers
+$j-1$ chiffres sont exactement \'egaux avec les premiers $j-1$ chiffres de $X$,
+mais dont les derniers $j$ chiffres sont diff\'erents des premiers $j$ chiffres
+de $X$. Apr\`es avoir reli\'e les ensembles, on obtient la somme comme suit
+\[
+	\Psi = \sum_{j=1}^{n} \sum_{i=1}^{\infty} \sum_{s\in S_{i}^{j}} \frac{1}{s}.
+\]
+On definit une matrice $T$ de dimension $n\times 10$. L'entr\'ee $(j, d)$ de
+$T$ indique l'ensemble obtenu apr\`es l'ajout du chiffre $d$ \`a chaque
+\'el\'ement de $S^{j}$. On d\'efinit $T(j, d)=0$, si l'ajout du chiffre $d$
+conduit \`a sortir de $S$.\\
+Par exemple, si on prend $X=42$, on partitionne $S$ en deux parties, $S^{1}$
+sont les \'el\'ements de $S$ qui ne se terminent pas par 4, et $S^{2}$ sont les
+\'el\'ements de $S$, se terminant par 4. Alors le tableau T est
+\[
+	T = 
+\left[
+\begin{array}{c|cccccccccc}
+			& 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
+	\hline 1& 1 & 1 & 1 & 1 & 2 & 1 & 1 & 1 & 1 & 1 \\
+	2		& 1 & 1 & 0 & 1 & 2 & 1 & 1 & 1 & 1 & 1 \\
+\end{array}
+\right]
+\]
+La relation entre les ensembles $S^{1},\ldots,S^{n}$ peut \'egalement \^etre
+montr\'ee par un graphe orient\'e. Il y a une ar\^ete de $S^{i}$ \`a $S^{j}$ si
+l'ajout d'un chiffre aux \'el\'ements de $S^{i}$ donne un \'el\'ement
+de $S^{j}$. Par exemple, le graphe de droite est le graphe de T d\'efini
+ci-dessus, et le graphe de gauche est graphe de la contrainte $X=314$.
+\begin{equation}
+\adjustbox{scale=0.6, center}{%
+	\begin{tikzcd}
+		&& {S^2} \\
+		{S^1} &&&& {S^1} && {S^2} \\
+		&& {S^3}
+		\arrow[from=1-3, to=1-3, loop, in=10, out=80, distance=10mm]
+		\arrow[latex-latex, from=1-3, to=3-3]
+		\arrow[latex-latex, from=2-1, to=1-3]
+		\arrow[from=2-1, to=2-1, loop, in=145, out=215, distance=10mm]
+		\arrow[from=2-5, to=2-5, loop, in=145, out=215, distance=10mm]
+		\arrow[latex-latex, from=2-5, to=2-7]
+		\arrow[from=2-7, to=2-7, loop, in=325, out=35, distance=10mm]
+		\arrow[from=3-3, to=2-1]
+	\end{tikzcd}}
+	\label{eq:graph}
+\end{equation}
+
+
+Il est important de noter que l'on travaille ici avec des graphes fortement connexe.
+Premi\`erement, on commence avec une d\'efinition.
+\[
+	\Psi_{i,k}^{j} = \sum_{s\in S_{i}^{j}} \frac{1}{s^{k}}.
+\]
+Donc, le probl\'eme est r\'eduit \`a calculer
+\[
+	\Psi = \sum_{j=1}^{n}\sum_{i=1}^{\infty}\Psi_{i, 1}^{j}.
+\]
+La relation r\'ecursive des ensembles $S_{i}^{j}$ est utilis\'ee pour d\'eriver
+une relation de r\'ecurrence pour les sommes $\Psi_{i,k}^{j}$. Donc, on introduit
+un tenseur $f$ de dimension $n\times n\times10$ comme
+\[
+	f_{jlm} = 
+	\begin{cases}
+		1 & \text{si }  T(l,m) = j \\
+		0 & \text{sinon}.
+	\end{cases}
+\]
+Ce tenseur indique si un terme doit \^etre inclus ou non. Ainsi la somme est
+\[
+	\Psi_{i,k}^{j} = \sum_{m=0}^{9}\sum_{l=1}^{n} f_{jlm} \sum_{s\in
+	S_{i-1}^{l}} (10s+m)^{-k}.
+\]
+En utilisant la s\'erie binomiale n\'egative, on observe
+\[
+	(10s+m)^{-k} =
+	(10s)^{-k}\sum_{w=0}^{\infty}(-1)^{w}\binom{k+w-1}{w}\left( \frac{m}{10s} \right)^{w}
+\]
+o\`u $0^{0}=1$. On d\'efinit \'egalement
+\[
+	\begin{split}
+		&c(k, w) = (-1)^{w}\binom{k+w-1}{w}\\
+		&a(k, w, m) = 10^{-k-w}c(k, w)m^{w}.
+	\end{split}
+\]
+Donc la somme est \'egale \`a
+\begin{equation*}
+	\begin{split}
+		\Psi_{i,k}^{j} &= \sum_{m=0}^{9}\sum_{l=1}^{n}f_{jlm} \sum_{s\in S_{i-1}^{l}} (10s)^{-k} \sum_{w=0}^{\infty} c(k,w) \left(\frac{m}{10s}\right)^{w}\\
+					   &= \sum_{m=0}^{9}\sum_{l=1}^{n}f_{jlm} \sum_{w=0}^{\infty} 10^{-k-w} c(k, w)m^{w} \sum_{s\in S_{i-1}^{l}} s^{-k-w}.
+	\end{split}
+\end{equation*}
+Et donc,
+\begin{equation}
+	\Psi_{i, k}^{j} = \sum_{m=0}^{9}\sum_{l=1}^{n}f_{jlm} \sum_{w=0}^{\infty} a(k,w,m)\Psi_{i-1, k+w}^{l}.
+	\label{eq:partial}
+\end{equation}
+\subsubsection{Troncature et extrapolation}
+% \addcontentsline{toc}{subsection}{Troncature et extrapolation}
+Maintenant, on va faire une analyse num\'erique du probl\`eme. Jusqu'\`a
+pr\'esent, on a seulement reformul\'e la somme en utilisant les sommes
+partielles $\Psi_{i,k}^{j}$. On doit calculer $\Psi = \sum_{i,j}
+\Psi_{i,1}^{j}$.
+
+Pour $i\le3$, les sommes $\Psi_{i,k}^{j}$ sont calcul\'ees explicitement
+sans approximation. Pour $i>3$, on utilise la formule r\'ecursive de (\ref{eq:partial}).
+Pour $w$, on va tronquer en n\'egligeant tous les termes $\Psi_{i-1,k+w}^{l}$ plus
+petit que une limite donn\'ee $\eps$, c'est-\`a-dire quand $k+w$ est
+suffisamment grand. Pour la m\^eme raison, on peut n\'egliger les termes pour
+$i$ grand avec $k+w>1$. L'\'equation (\ref{eq:partial}) avec $w=0$ et $k=1$
+sous la forme matricielle est
+\begin{equation} 
+	\begin{pmatrix}
+		\Psi_{i,1}^1 \\
+		\vdots \\
+		\Psi_{i,1}^n 
+	\end{pmatrix} \approx \sum_{m=0}^{9} 10^{-1}
+	\begin{pmatrix}
+		f_{11m} & \ldots & f_{1nm} \\
+		\vdots &  & \vdots \\
+		f_{n1m} & \ldots & f_{nnm}\\
+	\end{pmatrix}
+	\begin{pmatrix}
+		\Psi_{i-1,1}^1 \\
+		\vdots \\
+		\Psi_{i-1,1}^n
+	\end{pmatrix} = A_{n} \begin{pmatrix}
+		\Psi_{i-1,1}^1 \\
+		\vdots \\
+		\Psi_{i-1,1}^n
+	\end{pmatrix}
+	\label{eq:matrix}
+\end{equation}
+Donc, on d\'efinit $A_{n}$ comme la somme de matrices ci-dessus. La matrice non
+n\'egative $A_{n}$ est contractante, c'est-\`a-dire toutes les valeurs propres
+de $A_{n}$ se trouvent \`a l'int\'erieur du disque unit\'e.
+% \begin{defn}[\cite{matrix}, D\'efinition 6.2.11]
+\begin{defn}
+	\indent Le digraphe associ\'e \`a la matrice $n\times n$ $A_{n}$ est le graphe
+	orient\'e avec sommets num\'erat\'es et une ar\^ete de $i$ vers $j$ si et
+	seulement si $A(i,j)\ne0$. \cite[D\'efinition 6.2.11]{matrix}
+\end{defn}
+\indent Le digraphe associ\'e de $A_{n}^{T}$ repr\'esentant les ensembles
+$S^{j}$ est exactement le graphe introduit ci-dessus (\ref{eq:graph}). On
+suppose que ce graphe est fortement connexe et donc $A_{n}$ et $A_{n}^{T}$
+sont irreductibles \cite[Th\'eor\`eme 6.2.14]{matrix}. Ainsi, le th\'eor\`eme
+suivant est applicable \cite[Th\'eor\`eme 8.4.4]{matrix}.
+\begin{thm}[Perron-Frobenius]
+	Soit $A$ une matrice non n\'egative et irr\'eductible. Alors;
+	\begin{itemize}
+		\item Il existe une valeur propre $\lambda_{d}$ qui est r\'eelle et positive, avec vecteurs propres positifs \`a gauche et \`a droite.
+		\item Les autres valeurs propres $\lambda$ satisfont $\vert\lambda\vert < \lambda_{d}$.
+		\item La valeur propre $\lambda_{d}$ est simple.
+	\end{itemize}
+	Alors, la valeur propre $\lambda_{d}$ s'appelle \textit{la valeur propre dominante} de $A$.
+\end{thm}
+Ici, on doit juste montrer que la valeur propre dominante $\lambda_{d}$ de
+$A_{n}$ est plus petite que 1. Prenons la $l$-i\'eme colonne de la matrice
+\[ \begin{pmatrix}
+f_{11m} & \ldots & f_{1nm} \\
+\vdots &  & \vdots \\
+f_{n1m} & \ldots & f_{nnm} 
+\end{pmatrix}.\]
+Par d\'efinition de $f$, la ligne $T(l,m)$ admet un 1 si $T(l,m) > 0$. Toutes
+les autres entr\'ees de la colonne sont z\'ero. Ainsi pour chaque colonne
+$a_{i}$, on a $\norm{a_{i}}_{1}\le1$. L'existence de colonnes pour lesquelles toutes
+les entr\'ees sont z\'ero implique qu'il existe des colonnes de $A_{n}$ avec
+$\norm{a_{i}}_{1}<1$. Soit $x$ la valeur propre \`a droite de $A_{n}$
+correspondant \`a $\lambda_{d}$. Alors, on a
+\[
+	\lambda_{d} \norm{x}_{1} = \norm{A_{n}x}_{1} \le \sum_{i=1}^{n}\vert x_{i}\vert  \norm{a_{i}}_{1} < \sum_{i=1}^{n}\vert x_{i}\vert  = \norm{x}_{1}.
+\]
+Ainsi, $\lambda_{d} < 1$. On a montr\'e que spec$(A_{n})$ se trouve \`a
+l'int\'erieur de disque unit\'e. Pour un grand $K$, on peut simplifier
+\[
+	\sum_{i=1}^{\infty}  
+	\begin{pmatrix}
+		\Psi_{i+K,1}^1 \\
+		\vdots \\
+		\Psi_{i+K,1}^n 
+	\end{pmatrix} \approx \sum_{i=1}^{\infty} A_{n}^{i}
+	\begin{pmatrix}
+		\Psi_{K,1}^1 \\
+		\vdots \\
+		\Psi_{K,1}^n 
+	\end{pmatrix}.
+\]
+Puisque $A_{n}$ est une matrice contractante, on peut d\'efinir
+\[
+	B_{n}^{\infty}\defeq\sum_{k=1}^{\infty}A_{n}^{k}=(I_{n}- A_{n})^{-1}-I_{n}.
+\]
+On a donc
+\begin{equation}
+	\Psi \approx \sum_{j=1}^{n}\sum_{i=1}^{K}\Psi_{i,1}^{j} + \norm{B_{n}^{\infty}
+	\begin{pmatrix}
+		\Psi_{K,1}^1 \\
+		\vdots \\
+		\Psi_{K,1}^n 
+	\end{pmatrix}
+	}_{1}.
+	\label{eq:approx}
+\end{equation}
+\subsubsection{Comportement asymptotique}
+% \addcontentsline{toc}{subsection}{Comportement asymptotique}
+On definit la \textit{p\'eriode} de la cha\^ine comme la longueur du plus
+petit motif qui se r\'ep\`ete. Dans le premier tableau, il y a les
+valeurs de $\Psi/10^{n}$ pour diff\'erents $X$ al\'eatoires et le deuxi\`eme
+tableau, pour $X$ avec les cha\^ines de p\'eriode 1 et 2.\\
+\begin{table}[ht!]
+	\mbox{}\hfill
+	\begin{minipage}{0.45\textwidth}
+		\normalsize{\caption{\small{Cha\^ines al\'eatoire de longueur 20, tir\'ees de
+		\cite{schmelzer}}}}
+		\vfill{}
+		\resizebox{\columnwidth}{!}{%
+			\begin{tabular}{@{}r@{\hspace{5mm}}l@{\hspace{5mm}}l@{}}
+				\toprule
+				$n$ & Cha\^ine $X_n$ & $\Psi/10^n$ \\ \midrule
+				20  & 21794968139645396791 & 2,30258 50929 94045 68397 52162\\
+				20  & 31850115459210380210 & 2,30258 50929 94045 68399 08824\\
+				20  & 67914499976105176602 & 2,30258 50929 94045 68401 09579\\
+				20  & 98297963712691768117 & 2,30258 50929 94045 68401 77079\\ \bottomrule
+			\end{tabular}%
+			\label{tab:random}
+		}
+	\end{minipage}%
+	\hfill{}
+	\begin{minipage}{0.45\textwidth}
+		\normalsize{\caption{\small{Cha\^ines de periode 1 et 2, tir\'ees de
+		\cite{schmelzer}}}}
+		\vfill{}\ \\
+		\resizebox{\columnwidth}{!}{%
+			\begin{tabular}{@{}r@{\hspace{5mm}}l@{\hspace{5mm}}l@{}}
+				\toprule
+				$n$ & Cha\^ine $X_n$ & $\Psi/10^n$ \\ \midrule
+				20  & 00000000000000000000 & 2,55842 78811 04495 20443 88506 \\
+				20  & 99999999999999999999 & 2,55842 78811 04495 20443 88506 \\ \midrule
+				20  & 42424242424242424242 & 2,32584 35282 76813 82219 89695 \\
+				20  & 09090909090909090909 & 2,32584 35282 76813 82221 85405 \\ \midrule
+			\end{tabular}%
+		}
+		\label{tab:period}
+	\end{minipage}\hfill
+	\mbox{}
+\end{table}
+
+\noindent On peut voir que, bien que les chaînes soient complètement différentes, les
+sommes 'normalisées' sont presque les mêmes que $\ln(10) \approx 2,30258\
+50929\ 94045\ 68401\ 79914$. Plus g\'en\'eralement on peut donner le
+th\'eor\`eme suivant avec le petit d\'etail que l'absence de motif p\'eriodique
+signifie que $p$ tend vers l'infini.
+\begin{thm}
+	Soit $X_{n}$ un motif de longueur $n$ et p\'eriode $p$. Alors, la somme de
+	$1/s$ o\`u $s$ n'inclut pas $X_{n}$, verifie:
+	\[
+		\lim \limits_{n\rightarrow\infty}\frac{\Psi_{X_{n}}}{10^{n}} =
+		\frac{10^{p}}{10^{p}-1}\ln(10).
+	\]
+    \label{thm:periode}
+\end{thm}
+
+Schmelzer a donn\'e une preuve seulement pour le cas $p=1$. Pour ce cas, on a
+$X_{n} = dd\dots d$ de $n$ chiffres. On analyse le spectre de la matrice
+$A_{n}$ dans (\ref{eq:matrix}). Premi\`erement on \'ecrit le tableau $T$ et matrice
+$A_{n}$.\\
+\begin{minipage}{0.45\textwidth}
+\[
+	T = 
+\left[
+\begin{array}{c|cccccccccc}
+			& 0 & \dots & d & \dots & 9 \\
+	\hline 1& 1 & \dots & 2 & \dots & 1 \\
+		   2& 1 & \dots & 3 & \dots & 1 \\
+	\vdots	&  &  & \vdots &  &  \\
+		   n& 1 & \dots & 0 & \dots & 1
+\end{array}
+\right],
+\]
+\end{minipage}%
+\begin{minipage}{0.55\textwidth}
+\[
+	A_{n} =
+	\begin{pmatrix}
+		9/10 & 9/10 & \ldots & \ldots & 9/10 \\
+		1/10 & 0 & \ldots & \ldots & 0 \\
+		0 & 1/10 &  &  & \vdots \\
+		\vdots &  & \ddots &  & \vdots \\
+		0 & \ldots & 0 & 1/10 & 0 
+	\end{pmatrix}.
+\]
+\end{minipage}\\
+
+On va \'etudier le spectre de $A_{n}$, et pour cela, on a besoin du Th\'eor\`eme
+de Gershgorin \cite[Th\'eor\`eme 6.1.1]{matrix} comme suit.
+\begin{thm}[Gershgorin]
+	Soit $A$ matrice de taille $n\times n$, et soit
+	\[
+		R_{i}(A) = \sum_{\substack{j=1\\ j\ne i}}^{n}\vert a_{ij}\vert, \qquad
+		1\le i\le n
+	\]
+	la somme de valeurs absolues des des \'elements de la ligne $i$, sauf celui
+	de la diagonale. Alors toutes les valeurs propres de $A$ se trouvent dans
+	l'union de $n$ disques de Gershgorin
+	\[
+		\{z\in\C \text{ }\vert \text{ } \vert z-a_{ii}\vert \le R_{i}(A)\},
+		\qquad 1\le i \le n.
+	\]
+	En plus, si l'union de $k$ de ces $n$ disques forment un ensemble $G$ tel
+	que $G$ est disjoint des autres $n-k$ disques, alors $G$ contient
+	exactement $k$ valeurs propres de $A$, compt\'ees selon leurs
+	multiplicit\'es alg\'ebriques.
+\end{thm}
+On va continuer cette d\'emonstration avec une s\'erie de lemmes, et ensuite le
+r\'esultat souhait\'e sera obtenu trivialement.
+\begin{lem}
+	La matrice $A_{n}$ est diagonalisable. En plus, les valeurs propres de la
+	matrice $A_{n}$ sont les solutions de l'\'equation
+	\begin{equation}
+		\lambda^{n}(1-\lambda) = 9/10^{n+1}
+		\label{eq:eigens}
+	\end{equation}
+	\`a l'exception de $1/10$. En plus, il y a exactement $n-1$ valeurs propres
+	de $A_{n}$ dans un disque de rayon $1/10$ centr\'e \`a l'origine, et
+	$(\lambda^{n-1}, \lambda^{n-2}, \ldots, 1)^{T}$ est un vecteur propre de
+	$A_{n}$.
+\end{lem}
+\begin{proof}
+	Pour trouver les valeurs propres de $A_{n}$, on doit d\'eterminer les
+	$\lambda$ qui satisfont $\vert A_{n}-\lambda I_{n}\vert=0$. Soit $x =
+	10\lambda$.
+	\begin{align*}
+		\begin{split}
+			\vert A_{n}-\lambda I_{n}\vert &= \frac{1}{10^{n}} \left\vert 
+			\begin{pmatrix}
+				9-x & 9 & \ldots & 9 \\
+				1 & -x & & \\
+				& \ddots & \ddots &\\
+				& & 1 & -x 
+			\end{pmatrix} \right\vert \\
+		   &= (9-x)(-x)^{n-1} - 9(-x)^{n-2} + \ldots \pm 9(-x)^{0} \\
+		   &= (-x)^{n} + 9\sum_{i=0}^{n-1} (-1)^{n-i+1} (-x)^{i} = (-x)^{n} +
+		   9\sum_{i=0}^{n-1} (-1)^{n+1} x^{i} = 0\\
+		   &\Rightarrow -10(-x)^{n} = -9(-x)^{n} + 9 \sum_{i=0}^{n-1}
+		   (-1)^{n+1}x^{i}\\
+		   &\Rightarrow \sum_{i=0}^{n} (-1)^{n} x^{i} = \frac{10(-x)^{n}}{9}
+		   \Rightarrow \frac{1-x^{n+1}}{1-x} = \frac{10x^{n}}{9},\qquad(x\ne1)\\
+		   &\Rightarrow 9 = x^{n}(10-x) = 10^{n}\lambda^{n}10(1-\lambda)
+		   \Rightarrow \frac{9}{10^{n+1}} = \lambda^{n}(1-\lambda).
+		\end{split}
+	\end{align*}
+	Donc $A_{n}$ admet $n$ valeurs propres, alors elle est diagonalisable. On a aussi
+	\begin{equation*}
+		10A_{n} 
+		\begin{pmatrix}
+			x_1 \\
+			\vdots \\
+			x_n 
+		\end{pmatrix} = \begin{pmatrix}
+			9\sum_{i=1}^nx_i \\
+			x_1 \\
+			\vdots \\
+			x_{n-1} 
+		\end{pmatrix} = \lambda\begin{pmatrix}
+			x_1 \\
+			\vdots \\
+			x_n 
+		\end{pmatrix}.
+	\end{equation*}
+	Alors, $x_{n-k} = \lambda^{k} x_{n}$. Donc $(\lambda^{n-1},\ldots,
+	\lambda,1)^{T}$ est un vecteur propre de $A_{n}$ en choisissant $x_{n}=1$.
+	Les racines du polyn\^ome $x^{n}(10-x)-9$ sont les valeurs propres de la
+	matrice compagnon de dimension $(n+1)\times (n+1)$.
+	\[
+		H_{n+1} = \begin{pmatrix}
+		10 & 0 & \ldots & 0 & -9 \\
+		1 &  &  &  &  \\
+		 & \ddots &  &  &  \\
+		 &  & \ddots &  &  \\
+		0 &  &  & 1 & 0 
+		\end{pmatrix}
+	\]
+	On \'ecrit $H_{n+1} = D_{n+1}+B_{n+1}$ o\`u $D_{n+1} = $
+	diag$(10,0,\ldots,0)$ et on pose $H_{n+1}^{\eps} = D_{n+1}+\eps B_{n+1}$
+	for $\eps\in [0,1]$. Pour tout $\eps < 1$, l'union des disques Gershgorin
+	de rayon $\eps$ centr\'es \`a l'origine est disjointe du disque centr\'e
+	en 10. Parce que les valeurs propres de $H_{n+1}^{\eps}$ sont des fonctions
+	continues de $\eps$, il y a $n$ valeurs propres de $H_{n+1}^{1}$ situ\'ees
+	\`a l'int\'erieur du disque unit\'e ferm\'e, avec une valeur propre simple
+	\`a 1. Donc il y a $n-1$ valeurs propres de $A_{n}$ \`a l'int\'erieur du
+	disque de rayon $1/10$.
+\end{proof}
+\begin{lem}
+	Soit $\lambda_{n}$ la valeur propre dominante de $A_{n}$. Alors
+	\begin{equation}
+		\lim_{n\rightarrow\infty}\lambda_{n}^{n} = 1.
+		\label{eq:limlambda}
+	\end{equation}
+\end{lem}
+\begin{proof}
+	Puisque $\lambda_{n}$ est une valeur propre de $A_{n}$, elle est solution de
+	(\ref{eq:eigens}). Les z\'eros de la d\'eriv\'ee de ce polyn\^{o}me sont
+	$n\lambda^{n-1}=(n+1)\lambda^{n}\Rightarrow \lambda = \frac{n}{n+1}$. Alors
+	(\ref{eq:eigens}) est d\'ecroissant apr\`es $\lambda = n/n+1$. Mais pour
+	$\lambda=(1-1/10^{n})$, on a $\lambda^{n}(1-\lambda) > 9/10^{n+1}$,
+	et donc $1>\lambda_{n}>(10^{n}-1)/10^{n}$. Il suffit de prendre la puissance
+	$n$-i\`eme de tous termes pour finir la preuve.
+\end{proof}
+\begin{lem}
+	Soit $\Omega_{n}$ la valeur propre dominante de $1/10^{n}\B$. Alors
+	\begin{equation}
+		\lim_{n\rightarrow\infty}\Omega_{n} = \frac{10}{9}.
+	\end{equation}
+\end{lem}
+\begin{proof}
+	Soit $\lambda_{n}$ la valeur propre dominante de $A_{n}$. On a donc
+	\[
+		\lim_{n\rightarrow\infty} \Omega_{n} =
+		\lim_{n\rightarrow\infty} \frac{(1-\lambda_{n})^{-1}-1}{10^{n}} =
+		\lim_{n\rightarrow\infty} \left(\frac{10^{n+1}\lambda_{n}^{n}}{9\times 10^{n}}-\frac{1}{10^{n}}\right) =
+		\frac{10}{9}.
+	\]
+\end{proof}
+La valeur propre dominante de $1/10^{n}\B$ est la valeur propre dominante de
+$10A_{n}$. La valeur propre dominante de $10A_{n}$ approche de 10 et donc le
+vecteur propre approche de $(1, 1/10, \ldots, 1/10^{n-1})^{T}$, o\`u le vecteur
+est normalis\'e pour la premi\`ere composante.
+\begin{lem}
+	Soit $\Psi_{n-1,1}^{1}, \ldots, \Psi_{n-1,1}^{n}$ les sommes partielles des
+	r\'eciproques de nombres de $n-1$ chiffres associ\'es avec le motif
+	$X=d\ldots d$ de longueur $n$. Alors
+	\[
+		\norm{\B \begin{pmatrix}
+			\Psi_{n-1,1}^1 \\
+			\vdots \\
+			\Psi_{n-1,1}^n 
+		\end{pmatrix}}_{1} 
+		\xrightarrow[n\rightarrow\infty]{} \frac{10}{9}\ln(10).
+	\]
+	\label{lem:finlem}
+\end{lem}
+\begin{proof}
+	La norme du vecteur
+	\[ 
+	\begin{pmatrix}
+		\Psi_{n-1,1}^1 \\
+		\vdots \\
+		\Psi_{n-1,1}^n 
+	\end{pmatrix}
+	\] 
+	\normalsize
+	est exactement la somme de $1/s$ sur tous les entiers positifs ayant
+	exactement $n-1$ chiffres. Aucun entier n'a encore \'et\'e supprim\'e. Donc
+	\[
+		\norm{\begin{pmatrix}
+			\Psi_{n-1,1}^1 \\
+			\vdots \\
+			\Psi_{n-1,1}^n 
+		\end{pmatrix}}_{1}
+		\xrightarrow[n\rightarrow\infty]{} \int_{10^{n-1}}^{10^{n}}\frac{1}{t}dt = \ln(10).
+	\]
+	La prochaine affirmation est que
+	\[
+		\lim_{n\rightarrow\infty}\norm{
+		\frac{1}{\Psi_{n-1,1}^{1}}\begin{pmatrix}
+			\Psi_{n-1,1}^1 \\
+			\vdots \\
+			\Psi_{n-1,1}^n 
+		\end{pmatrix} - \begin{pmatrix}
+			1 \\
+			1/10 \\
+			\vdots\\
+			1/10^{n-1}
+		\end{pmatrix}}_{1} = 0.
+	\]
+	La premi\`ere entr\'ee est \'evidemment z\'ero. La deuxi\`eme entr\'ee est
+	le rapport de la somme des nombres \`a $n-1$ chiffres se terminant par $d$
+	mais pas $dd$ aux nombres \`a $n-1$ chiffres ne se terminant pas par $d$.
+	C'est-\`a-dire, le rapport des nombres de la forme $x\ldots yd$ et $z\ldots
+	t$, o\`u $x$ et $z$ peuvent \^{e}tre n'importe quels chiffres, tandis que
+	$y$ et $t$ sont des chiffres diff\'erents que $d$. Le nombre de termes dans
+	les deux sommes est exactement $\frac{10^{n-2} \times 9}{10^{n-1} \times 9}
+	= \frac{1}{10}$. Ce rapport tend vers $1/10$, puisque les nombres se
+	terminant par $d$ sont \'egalement distribu\'es entre les nombres ne se
+	terminant pas par $d$. Le m\^{e}me argument s'applique pour les autres
+	colonnes. Donc, le vecteur
+	\[
+		\begin{pmatrix}
+			\Psi_{n-1,1}^1 \\
+			\vdots \\
+			\Psi_{n-1,1}^n 
+		\end{pmatrix}
+	\]
+	tend vers le vecteur propre dominant de $\B$ en
+	approchant la norme $\ln(10)$.
+\end{proof}
+En utilisant le Lemme \ref{lem:finlem}, on peut examiner l'\'equation
+(\ref{eq:approx}) dans une nouvelle perspective, o\`u on fixe la variable de
+troncature $K$ \`a $n-1$ et introduit un terme d'erreur $e_{n}$. Donc
+(\ref{eq:approx}) est maintenant \'egale \`a
+\[
+	\frac{\Psi_{X_{n}}}{10^{n}} = \frac{1}{10^{n}}\left( \sum_{j=1}^{n}\sum_{i=1}^{n-1}\Psi_{i,1}^{j}
+		+ \norm{\B \begin{pmatrix}
+			\Psi_{n-1,1}^1 \\
+			\vdots \\
+			\Psi_{n-1,1}^n 
+	\end{pmatrix}}_{1} + e_{n} \right).
+\]
+Les plus grands termes collect\'es dans $e_{n}$ sont $\Psi_{n-1,2}^{j}$ pour
+$j=1,\ldots,n$. Leur somme est plus petite que $9/10^{n-2}$. Alors les termes
+n\'eglig\'es, deviennent exponentiellement petits pour $n$ grand. On observe
+aussi que pour $n$ grand, la somme double multipli\'ee par $10^{-n}$ converge
+vers z\'ero en raison de la croissance trop lente de la somme. Le terme
+d'erreur $e_{n}$ est mis \`a l'\'echelle par $10^{-n}$ montrant que la somme
+qu'on n\'eglige dispara\^{i}t aussi. Donc le Lemma \ref{lem:finlem} implique
+que
+\[
+	\lim_{n\rightarrow\infty}\frac{\Psi_{X_{n}}}{10^{n}} =
+	\lim_{n\rightarrow\infty}\norm{\frac{1}{10^{n}}\B 
+	\begin{pmatrix}
+		\Psi_{n-1,1}^1 \\
+		\vdots \\
+		\Psi_{n-1,1}^n 
+	\end{pmatrix}}_{1} = \frac{10}{9}\ln(10).
+\]
